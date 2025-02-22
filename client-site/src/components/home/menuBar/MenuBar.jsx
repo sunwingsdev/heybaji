@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 const MenuBar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user, token } = useSelector((state) => state.auth);
-  const [activeTab, setActiveTab] = useState(1);
+  const [activeTab, setActiveTab] = useState(2);
   const { addToast } = useToasts();
   const navigate = useNavigate();
   const menuItems = [

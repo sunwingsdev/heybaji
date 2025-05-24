@@ -31,8 +31,8 @@ const Registration = () => {
                   Verification
                 </h3>
                 <p className="text-md font-medium text-white text-center mt-2">
-                  After submitting the HEYBAJI partner form, expect review and
-                  email confirmation within 24 hours.
+                  After submitting the {import.meta.env.VITE_SITE_NAME} partner
+                  form, expect review and email confirmation within 24 hours.
                 </p>
               </div>
               <div className="w-52 h-48 bg-black  shadow-customBoxGreenShadow border 1px solid border-customYellow rounded-[20px] flex flex-col justify-center items-center p-4">
@@ -40,7 +40,8 @@ const Registration = () => {
                   Payment
                 </h3>
                 <p className="text-md font-medium text-white text-center mt-2">
-                  Earnings are transferred weekly to the partner{"'"}s HEYBAJI
+                  Earnings are transferred weekly to the partner{"'"}s{" "}
+                  {import.meta.env.VITE_SITE_NAME}
                   account provided during registration.
                 </p>
               </div>

@@ -23,6 +23,12 @@ const commissionApi = require("./apis/commissionApi/commissionApi");
 
 const corsConfig = {
   origin: [
+    "https://bet20live.net",
+    "http://bet20live.net",
+    "https://www.bet20live.net",
+    "http://www.bet20live.net",
+    "www.bet20live.net",
+    "bet20live.net",
     "http://localhost:5173",
     "http://localhost:5174",
     "https://betby247.com",

@@ -29,13 +29,8 @@ import CashAgentRoute from "./CashAgentRoute";
 import CashAgentProfile from "../pages/cash-agent/CashAgentProfile";
 import Kyc from "../pages/dashboard/Kyc";
 import AffiliatesLayout from "../layout/AffiliatesLayout";
-import Affiliates from "../pages/affiliates/Affiliates";
 import Sign from "../components/affiliates/Sign";
 import Login from "../components/affiliates/Login";
-import Terns from "../components/affiliates/Terns";
-import Privacy from "../components/affiliates/Privacy";
-import Disconnection from "../components/affiliates/Disconnection";
-import Faqs from "../components/affiliates/Faqs";
 import Pages from "../pages/page/Pages";
 import ManagePages from "../pages/dashboard/ManagePages";
 import AffiliatesHome from "../pages/affiliates-dashboard/AffiliatesHome";
@@ -51,6 +46,11 @@ import CommissionSetting from "../pages/dashboard/CommissionSetting.jsx";
 import NotFound from "../pages/NotFound";
 import DepositLastPage from "../components/home/deposit-modal/DepositLastPage";
 import DepositMethod from "../pages/dashboard/DepositMethod";
+import BecomeAnAffiliate from "../pages/affiliates/BecomeAnAffiliate.jsx";
+import TermsAndConditions from "../pages/affiliates/TermsAndConditions/TermsAndConditions.jsx";
+import PrivacyPolicy from "../pages/affiliates/privacyPolicy/PrivacyPolicy.jsx";
+import Disconnection from "../pages/affiliates/disconnection/Disconnection.jsx";
+import Faqs from "../pages/affiliates/faqs/Faqs.jsx";
 
 const router = createBrowserRouter([
   {
@@ -131,19 +131,19 @@ const router = createBrowserRouter([
   },
   {
     path: "/affiliate",
-    element: <Affiliates />,
+    element: <BecomeAnAffiliate />,
     children: [
       {
         path: "",
         element: <HomeAffiliate />,
       },
       {
-        path: "terns",
-        element: <Terns />,
+        path: "termsandconditions",
+        element: <TermsAndConditions />,
       },
       {
-        path: "privacy",
-        element: <Privacy />,
+        path: "privacypolicy",
+        element: <PrivacyPolicy />,
       },
       {
         path: "disconnection",

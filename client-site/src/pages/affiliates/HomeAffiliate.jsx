@@ -1,9 +1,9 @@
-import Introduction from "../../components/affiliates/Introduction";
-import Products from "../../components/affiliates/Products";
-import Commission from "../../components/affiliates/Commission";
-import Affiliate from "../../components/affiliates/Affiliate";
-import Registration from "../../components/affiliates/Registration";
-import Join from "../../components/affiliates/Join";
+import Introduction from "../../components/become-an-affiliate/homeAffiliate/Introduction";
+import Products from "../../components/become-an-affiliate/homeAffiliate/Products";
+import Commission from "../../components/become-an-affiliate/homeAffiliate/Commission";
+import Affiliate from "../../components/become-an-affiliate/homeAffiliate/Affiliate";
+import Registration from "../../components/become-an-affiliate/homeAffiliate/Registration";
+import Join from "../../components/become-an-affiliate/homeAffiliate/Join";
 
 const HomeAffiliate = () => {
   return (

@@ -62,53 +62,6 @@ const MenuBar = () => {
     // },
     {
       id: 2,
-      name: "SPORTS",
-      icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/theme-icon/icon-sport.png?v=1737700451320",
-      subItems: [
-        {
-          id: 1,
-          name: "9WICKETS",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/sports-icon/icon-exchange.png?v=1735554256445&source=mcdsrc",
-        },
-        {
-          id: 2,
-          name: "SBO",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/sports-icon/icon-sbov2.png?v=1735554256445&source=mcdsrc",
-        },
-        {
-          id: 3,
-          name: "SABA",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-saba.png?v=1735554256445&source=mcdsrc",
-        },
-        {
-          id: 4,
-          name: "CMD",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/sports-icon/icon-cmd.png?v=1735554256445&source=mcdsrc",
-        },
-        {
-          id: 5,
-          name: "BTI",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/sports-icon/icon-sbtech.png?v=1735554256445&source=mcdsrc",
-        },
-        {
-          id: 6,
-          name: "HORSE",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/sports-icon/icon-horsebook.png?v=1735554256445&source=mcdsrc",
-        },
-        {
-          id: 7,
-          name: "SV388",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/sports-icon/icon-sv388.png?v=1735554256445&source=mcdsrc",
-        },
-        {
-          id: 8,
-          name: "RWB",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/sports-icon/icon-awcmrwb.png?v=1735554256445&source=mcdsrc",
-        },
-      ],
-    },
-    {
-      id: 3,
       name: "SLOTS",
       icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/theme-icon/icon-slot.png?v=1737700451320",
       subItems: [
@@ -215,7 +168,161 @@ const MenuBar = () => {
       ],
     },
     {
+      id: 3,
+      name: "SPORTS",
+      icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/theme-icon/icon-sport.png?v=1737700451320",
+      subItems: [
+        {
+          id: 1,
+          name: "9WICKETS",
+          icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/sports-icon/icon-exchange.png?v=1735554256445&source=mcdsrc",
+        },
+        {
+          id: 2,
+          name: "SBO",
+          icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/sports-icon/icon-sbov2.png?v=1735554256445&source=mcdsrc",
+        },
+        {
+          id: 3,
+          name: "SABA",
+          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-saba.png?v=1735554256445&source=mcdsrc",
+        },
+        {
+          id: 4,
+          name: "CMD",
+          icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/sports-icon/icon-cmd.png?v=1735554256445&source=mcdsrc",
+        },
+        {
+          id: 5,
+          name: "BTI",
+          icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/sports-icon/icon-sbtech.png?v=1735554256445&source=mcdsrc",
+        },
+        {
+          id: 6,
+          name: "HORSE",
+          icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/sports-icon/icon-horsebook.png?v=1735554256445&source=mcdsrc",
+        },
+        {
+          id: 7,
+          name: "SV388",
+          icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/sports-icon/icon-sv388.png?v=1735554256445&source=mcdsrc",
+        },
+        {
+          id: 8,
+          name: "RWB",
+          icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/sports-icon/icon-awcmrwb.png?v=1735554256445&source=mcdsrc",
+        },
+      ],
+    },
+    {
       id: 4,
+      name: "SLOTS",
+      icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/theme-icon/icon-slot.png?v=1737700451320",
+      subItems: [
+        {
+          id: 1,
+          name: "JILI",
+          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmjili.png?v=1735554256445&source=mcdsrc",
+        },
+        {
+          id: 2,
+          name: "PG",
+          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-pg.png?v=1735554256445&source=mcdsrc",
+        },
+        {
+          id: 3,
+          name: "JDB",
+          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-jdb.png?v=1735554256445&source=mcdsrc",
+        },
+        {
+          id: 4,
+          name: "FASTSPIN",
+          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmfastspin.png?v=1735554256445&source=mcdsrc",
+        },
+        {
+          id: 5,
+          name: "PLAY8",
+          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmp8.png?v=1735554256445&source=mcdsrc",
+        },
+        {
+          id: 6,
+          name: "REDTIGER",
+          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmrt.png?v=1735554256445&source=mcdsrc",
+        },
+        {
+          id: 7,
+          name: "SG",
+          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmsg.png?v=1735554256445&source=mcdsrc",
+        },
+        {
+          id: 8,
+          name: "CQ9",
+          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-cq9.png?v=1735554256445&source=mcdsrc",
+        },
+        {
+          id: 9,
+          name: "FC",
+          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmfc.png?v=1735554256445&source=mcdsrc",
+        },
+        {
+          id: 10,
+          name: "KA",
+          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-ka.png?v=1735554256445&source=mcdsrc",
+        },
+        {
+          id: 11,
+          name: "PP",
+          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmpp.png?v=1735554256445&source=mcdsrc",
+        },
+        {
+          id: 12,
+          name: "PT",
+          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmpt.png?v=1735554256445&source=mcdsrc",
+        },
+        {
+          id: 13,
+          name: "NETENT",
+          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-netent.png?v=1735554256445&source=mcdsrc",
+        },
+        {
+          id: 14,
+          name: "JOKER",
+          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-joker.png?v=1735554256445&source=mcdsrc",
+        },
+        {
+          id: 15,
+          name: "PNG",
+          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-playngo.png?v=1735554256445&source=mcdsrc",
+        },
+        {
+          id: 16,
+          name: "NEXTSPIN",
+          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-nextspin.png?v=1735554256445&source=mcdsrc",
+        },
+        {
+          id: 17,
+          name: "RICH88",
+          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-rich88.png?v=1735554256445&source=mcdsrc",
+        },
+        {
+          id: 18,
+          name: "WORLDMATCH",
+          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-worldmatch.png?v=1735554256445&source=mcdsrc",
+        },
+        {
+          id: 19,
+          name: "YELLOWBAT",
+          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmyesbingo.png?v=1735554256445&source=mcdsrc",
+        },
+        { id: 20, name: "", icon: "" },
+        { id: 21, name: "", icon: "" },
+        { id: 22, name: "", icon: "" },
+        { id: 23, name: "", icon: "" },
+        { id: 24, name: "", icon: "" },
+      ],
+    },
+    {
+      id: 5,
       name: "CRASH",
       icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/theme-icon/icon-crash.png?v=1737700451320",
       subItems: [
@@ -246,7 +353,7 @@ const MenuBar = () => {
       ],
     },
     {
-      id: 5,
+      id: 6,
       name: "CASINO",
       icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/theme-icon/icon-casino.png?v=1737700451320",
       subItems: [
@@ -285,7 +392,7 @@ const MenuBar = () => {
       ],
     },
     {
-      id: 6,
+      id: 7,
       name: "TABLE",
       icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/theme-icon/icon-table.png?v=1737700451320",
       subItems: [
@@ -348,7 +455,7 @@ const MenuBar = () => {
       ],
     },
     {
-      id: 7,
+      id: 8,
       name: "LOTTERY",
       icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/theme-icon/icon-lottery.png?v=1737700451320",
       subItems: [
@@ -395,7 +502,7 @@ const MenuBar = () => {
       ],
     },
     {
-      id: 8,
+      id: 9,
       name: "FISHING",
       icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/theme-icon/icon-fish.png?v=1737700451320",
       subItems: [
@@ -442,7 +549,7 @@ const MenuBar = () => {
       ],
     },
     {
-      id: 9,
+      id: 10,
       name: "ARCADE",
       icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/theme-icon/icon-arcade.png?v=1737700451320",
       subItems: [

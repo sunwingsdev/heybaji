@@ -24,7 +24,8 @@ const Faqs = () => {
           </h2>
           <p className="text-base">
             – Get committed affiliate managers for help and support when you
-            complete the free affiliate registration at HEYBAJI.
+            complete the free affiliate registration at{" "}
+            {import.meta.env.VITE_SITE_NAME}.
           </p>
         </div>
         <div>
@@ -60,8 +61,8 @@ const Faqs = () => {
         </div>
         <div>
           <h2 className="text-xl text-customYellowHeading">
-            6. What payment methods are accepted by the HEYBAJI affiliate
-            program?
+            6. What payment methods are accepted by the{" "}
+            {import.meta.env.VITE_SITE_NAME} affiliate program?
           </h2>
           <p className="text-base">
             – All payments will be directed to the bank account given during
@@ -95,7 +96,8 @@ const Faqs = () => {
           </h2>
           <p className="text-base">
             – All payments will be made between the 6th and 10th of each month
-            once HEYBAJI affiliates have issued their monthly settlement report.
+            once {import.meta.env.VITE_SITE_NAME} affiliates have issued their
+            monthly settlement report.
           </p>
         </div>
         <div>
@@ -127,12 +129,12 @@ const Faqs = () => {
         </div>
         <div>
           <h2 className="text-xl text-customYellowHeading">
-            13. What is HEYBAJI Affiliate?
+            13. What is {import.meta.env.VITE_SITE_NAME} Affiliate?
           </h2>
           <p className="text-base">
-            – HEYBAJI’s affiliate program offers the chance to earn unlimited
-            lifetime commissions by generating links to their pages and
-            promoting special offers.
+            – {import.meta.env.VITE_SITE_NAME}’s affiliate program offers the
+            chance to earn unlimited lifetime commissions by generating links to
+            their pages and promoting special offers.
           </p>
         </div>
       </div>

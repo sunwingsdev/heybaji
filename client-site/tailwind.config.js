@@ -28,8 +28,11 @@ export default {
         marqueBg: "#ffffff",
         marqueText: "#000000",
         gameMenuBgActive: "#134878",
-        mobileMenuBg: "#147b44",
-        mobileSubMenuBg: "#1f603d",
+        mobileMenuBg: "#123356",
+        mobileSubMenuBg: "#0f212f",
+        depositeModalTitleColor: "#000000",
+        depositeModalBorderColor: "#000000",
+        depositChannelBorderColor: "#074625",
 
         customWhite: "#fff",
         customGreenPrimary: "#117c44",

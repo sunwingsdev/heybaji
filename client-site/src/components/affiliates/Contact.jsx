@@ -95,7 +95,9 @@ const Contact = () => {
       </div>
 
       <div className="bg-black text-center text-customYellow  py-4">
-        <p>Copyright 2025 HEYBAJI. All Rights Reserved.</p>
+        <p>
+          Copyright 2025 {import.meta.env.VITE_SITE_NAME}. All Rights Reserved.
+        </p>
       </div>
     </div>
   );

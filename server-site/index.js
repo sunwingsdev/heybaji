@@ -20,6 +20,8 @@ const paymentNumberApi = require("./apis/paymentNumberApi/paymentNumberApi");
 const paymentMethodApi = require("./apis/paymentMethodApi/paymentMethodApi");
 const referCodeApi = require("./apis/referCodeApi/referCodeApi");
 const commissionApi = require("./apis/commissionApi/commissionApi");
+const gameMainCategoriesApi = require("./apis/gameMainCategoriesApi/gameMainCategoriesApi");
+const gameNameApi = require("./apis/gameNameApi/gameNameApi");
 
 const corsConfig = {
   origin: [
@@ -126,6 +128,10 @@ async function run() {
     const commissionsCollection = client
       .db("heybaji")
       .collection("commissions");
+const gameMainCategoriesCollection = client
+      .db("heybaji")
+      .collection("gameMainCategories"); // New collection
+      const gameNameCollection = client.db("heybaji").collection("game-name"); // New collection
     //collections end
 
     // APIs start
@@ -145,6 +151,13 @@ async function run() {
     app.use("/paymentmethod", paymentMethodApi(paymentMethodCollection));
     app.use("/refer-links", referCodeApi(referCodesCollection));
     app.use("/commissions", commissionApi(commissionsCollection));
+    app.use(
+      "/game-main-categories",
+      gameMainCategoriesApi(gameMainCategoriesCollection)
+    ); // New API route
+    app.use("/game-name", gameNameApi(gameNameCollection,homeControlsCollection)); // New route
+
+
 
     // APIs end
 

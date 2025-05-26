@@ -51,6 +51,10 @@ import TermsAndConditions from "../pages/affiliates/TermsAndConditions/TermsAndC
 import PrivacyPolicy from "../pages/affiliates/privacyPolicy/PrivacyPolicy.jsx";
 import Disconnection from "../pages/affiliates/disconnection/Disconnection.jsx";
 import Faqs from "../pages/affiliates/faqs/Faqs.jsx";
+import GameName from "../pages/dashboard/AddGame.jsx";
+import GamePageFeatured from "../pages/GamePage/GamePageFeatured.jsx";
+import GamePageCategory from "../pages/GamePage/GamePageCategory.jsx";
+import SingleGameView from "../pages/GamePage/SingleGameView.jsx";
 
 const router = createBrowserRouter([
   {
@@ -73,6 +77,19 @@ const router = createBrowserRouter([
         path: "/signup",
         element: <ReferralRedirect />, // Redirect to homepage when ref query is present
       },
+      {
+        path: "/game/category/:subCategoryName",
+        element: <GamePageCategory />, // Redirect to homepage when ref query is present
+      },
+      {
+        path: "/game/featured/:gameId",
+        element: <GamePageFeatured />, // Redirect to homepage when ref query is present
+      },
+      {
+        path: "/game/GameView/:gameId",
+        element: <SingleGameView />, // Redirect to homepage when ref query is present
+      },
+      
     ],
   },
   {
@@ -90,6 +107,7 @@ const router = createBrowserRouter([
       { path: "affiliators", element: <Affiliators /> },
       { path: "allaffiliatelinks", element: <AllAffiliateLinks /> },
       { path: "game-categories", element: <GameCategories /> },
+      { path: "add-game", element: <GameName /> },
       { path: "active-games", element: <ActiveGames /> },
       { path: "inactive-games", element: <InActiveGames /> },
       { path: "games-api/:id", element: <GamesApi /> },

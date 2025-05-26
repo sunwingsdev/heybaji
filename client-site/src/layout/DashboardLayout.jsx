@@ -51,6 +51,7 @@ const DashboardLayout = () => {
       icon: <IoGameController />,
       submenu: [
         { name: "Categories", path: "/dashboard/game-categories" },
+        { name: "Add Game", path: "/dashboard/add-game" },
         { name: "Active Games", path: "/dashboard/active-games" },
         { name: "Inactive Games", path: "/dashboard/inactive-games" },
       ],

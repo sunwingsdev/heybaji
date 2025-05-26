@@ -8,7 +8,7 @@ import { useGetHomeControlsQuery } from "../../../redux/features/allApis/homeCon
 const FeaturedGames = () => {
   const { data: homeControls } = useGetHomeControlsQuery();
   const featuredHomeControls = homeControls?.filter(
-    (control) => control.category === "featured-game"
+    (control) => control.category === "featured-game" && control?.isSelected
   );
   return (
     <div>
@@ -56,7 +56,7 @@ const FeaturedGames = () => {
                 featured?.image
               }`}
               title={featured?.title}
-              link={featured?.link}
+              link={ `/game/featured/${featured?._id}` }
             />
           </SwiperSlide>
         ))}

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
 
@@ -8,21 +9,28 @@ export default function GamePageCategory() {
   const [subcategories, setSubcategories] = useState([]);
   const [activeSubcategory, setActiveSubcategory] = useState(null);
   const [games, setGames] = useState([]);
+  const [categoryDetails, setCategoryDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { addToast } = useToasts();
   const navigate = useNavigate();
 
+
+    // Access user data from redux store
+   const {user , token} = useSelector((state) => state?.auth);
+
+
   // Decode subcategory
   const decodedSubcategory = decodeURIComponent(subCategoryName);
 
-  // Fetch main category and subcategories
+  // Fetch main category, subcategories, and category details
   useEffect(() => {
     const fetchCategoryData = async () => {
       setLoading(true);
       setError(null);
       try {
-        const response = await fetch(
+        // Fetch main category and subcategories
+        const categoryResponse = await fetch(
           `${
             import.meta.env.VITE_BASE_API_URL
           }/game-main-categories/subcategory/${encodeURIComponent(decodedSubcategory)}`,
@@ -34,26 +42,54 @@ export default function GamePageCategory() {
           }
         );
 
-        if (!response.ok) {
+        if (!categoryResponse.ok) {
           throw new Error("Failed to fetch category data");
         }
 
-        const data = await response.json();
-        console.log("Fetched category data:", JSON.stringify(data, null, 2)); // Debug
-        setMainCategory(data.mainCategory || null);
+        const categoryData = await categoryResponse.json();
+      //  console.log("Fetched category data:", JSON.stringify(categoryData, null, 2)); // Debug
+        setMainCategory(categoryData.mainCategory || null);
         setSubcategories(
-          Array.isArray(data.subcategories)
-            ? data.subcategories.map((subcat) => subcat.name)
+          Array.isArray(categoryData.subcategories)
+            ? categoryData.subcategories.map((subcat) => subcat.name)
             : []
         );
         // Set active subcategory to URL subcategory
-        const initialSubcat = data.subcategories.find(
+        const initialSubcat = categoryData.subcategories.find(
           (subcat) => subcat.name.toLowerCase() === decodedSubcategory.toLowerCase()
         );
-        setActiveSubcategory(initialSubcat ? initialSubcat.name : data.subcategories[0]?.name);
+        setActiveSubcategory(initialSubcat ? initialSubcat.name : categoryData.subcategories[0]?.name);
+
+        // Fetch category details
+        if (categoryData.mainCategory) {
+          const detailsResponse = await fetch(
+            `${import.meta.env.VITE_BASE_API_URL}/game-main-categories/category-details`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          if (!detailsResponse.ok) {
+            throw new Error("Failed to fetch category details");
+          }
+
+          const detailsData = await detailsResponse.json();
+          //console.log("Fetched category details:", JSON.stringify(detailsData, null, 2)); // Debug
+          const matchedDetail = detailsData.find(
+            (detail) => detail.category.toUpperCase() === categoryData?.mainCategory?.toUpperCase()
+          );
+          setCategoryDetails(matchedDetail || null);
+
+      //    console.log( " matchedDetail",matchedDetail , "categoryData ",categoryData , "detailsData ",detailsData);
+          
+
+        }
       } catch (err) {
         setError(err.message);
-        addToast("Error fetching subcategories", { appearance: "error" });
+        addToast("Error fetching data", { appearance: "error" });
       } finally {
         setLoading(false);
       }
@@ -86,7 +122,7 @@ export default function GamePageCategory() {
         }
 
         const data = await response.json();
-        console.log("Fetched games:", JSON.stringify(data, null, 2)); // Debug
+     //   console.log("Fetched games:", JSON.stringify(data, null, 2)); // Debug
         setGames(Array.isArray(data) ? data : []);
       } catch (err) {
         setError(err.message);
@@ -107,7 +143,16 @@ export default function GamePageCategory() {
 
   // Handle game click
   const handleGameClick = (game) => {
-    navigate(`/game/GameView/${game._id}`);
+      if (!user && !token) {
+      addToast("Please login to play this game", {
+        appearance: "error",
+        autoDismiss: true,
+      });
+    } else  {
+     navigate(`/game/GameView/${game._id}`);
+    }
+
+   // navigate(`/game/GameView/${game._id}`);
   };
 
   if (loading) {
@@ -131,6 +176,31 @@ export default function GamePageCategory() {
   return (
     <div className="min-h-screen bg-gray-900 p-6">
       <div className="max-w-7xl mx-auto">
+        {/* Banner Section */}
+        <div
+          className="relative w-full h-48 rounded-lg mb-6 overflow-hidden bg-cover bg-center"
+          style={{
+            backgroundImage: categoryDetails?.gamePageBanner
+              ? `url(${import.meta.env.VITE_BASE_API_URL}${categoryDetails.gamePageBanner})`
+              : "url()",
+          }}
+        >
+          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center">
+            <div className="pl-6">
+              {categoryDetails?.gamePageBannerTitle && (
+                <h2 className="text-2xl md:text-3xl font-bold text-white">
+                  {categoryDetails.gamePageBannerTitle}
+                </h2>
+              )}
+              {categoryDetails?.gamePageAmount && (
+                <p className="text-lg md:text-xl text-gray-200 mt-2">
+                  {categoryDetails.gamePageAmount}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+
         <h1 className="text-3xl font-bold text-white mb-6 text-center">
           {mainCategory} Games
         </h1>
@@ -161,7 +231,11 @@ export default function GamePageCategory() {
             {games.map((game) => (
               <div
                 key={game._id}
-                onClick={() => handleGameClick(game)}
+                onClick={() =>{
+                  
+                  handleGameClick(game)}
+                
+                }
                 className="bg-gray-800 p-3 rounded-lg text-center cursor-pointer hover:bg-gray-700 transition-all duration-200"
               >
                 {game.image ? (
@@ -169,7 +243,7 @@ export default function GamePageCategory() {
                     src={`${import.meta.env.VITE_BASE_API_URL}${game.image}`}
                     alt={game.name}
                     className="w-full h-24 object-cover rounded-md mb-2"
-                    onError={(e) => (e.target.src = "/Uploads/images/default.png")}
+                    onError={(e) => (e.target.src = "")}
                   />
                 ) : (
                   <div className="w-full h-24 bg-gray-700 rounded-md mb-2 flex items-center justify-center">
@@ -179,8 +253,7 @@ export default function GamePageCategory() {
                 <p className="text-white text-sm font-semibold truncate">
                   {game.title}
                 </p>
-                <p className="text-gray-400 text-xs">{game.category
- || "Unknown"}</p>
+                <p className="text-gray-400 text-xs">{game.category || "Unknown"}</p>
               </div>
             ))}
             {games.length === 0 && (

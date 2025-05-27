@@ -31,7 +31,7 @@ const MenuBar = () => {
         }
 
         const data = await response.json();
-        console.log("Fetched menu data:", JSON.stringify(data, null, 2)); // Debug
+        // console.log("Fetched menu data:", JSON.stringify(data, null, 2)); // Debug
 
         // Group by category and collect order
         const categoryMap = data.reduce((acc, item) => {
@@ -40,7 +40,7 @@ const MenuBar = () => {
           if (!acc[upperCategory]) {
             acc[upperCategory] = {
               name: upperCategory,
-              icon: image || "/Uploads/images/default.png",
+              icon: image || "",
               order: order || 999, // Use order from DB
               subItems: [],
             };
@@ -49,7 +49,7 @@ const MenuBar = () => {
             acc[upperCategory].subItems.push({
               id: acc[upperCategory].subItems.length + 1,
               name: subcategory,
-              icon: submenuIcon || "/Uploads/images/default.png",
+              icon: submenuIcon || "",
               demo: null, // Add demo URL if available
               createdAt: createdAt || new Date(), // For sorting subItems
             });
@@ -116,7 +116,7 @@ const MenuBar = () => {
                   className="w-8 m-auto text-black bg-white rounded-full"
                   src={`${import.meta.env.VITE_BASE_API_URL}${item.icon}`}
                   alt={item.name}
-                  onError={(e) => (e.target.src = "/Uploads/images/default.png")} // Fallback image
+                 // onError={(e) => (e.target.src = "/Uploads/images/default.png")} // Fallback image
                 />
                 <p className="mt-0.5 text-white whitespace-nowrap">{item.name}</p>
               </div>
@@ -146,7 +146,7 @@ const MenuBar = () => {
                         className="w-6 lg:w-10 h-6 lg:h-10 mx-auto"
                         src={`${import.meta.env.VITE_BASE_API_URL}${subItem.icon}`}
                         alt={subItem.name}
-                        onError={(e) => (e.target.src = "/Uploads/images/default.png")} // Fallback image
+                      //  onError={(e) => (e.target.src = "/Uploads/images/default.png")} // Fallback image
                       />
                     )}
                     <p className="mt-1 text-xs lg:text-sm font-semibold text-white whitespace-nowrap truncate">

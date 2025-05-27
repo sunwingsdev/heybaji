@@ -90,7 +90,7 @@ export default function SingleGameView() {
                 src={`${import.meta.env.VITE_BASE_API_URL}${game.image}`}
                 alt={game.title}
                 className="w-full md:w-40 h-40 object-cover rounded-md"
-                onError={(e) => (e.target.src = "/Uploads/images/default.png")}
+              //  onError={(e) => (e.target.src = "/Uploads/images/default.png")}
               />
             ) : (
               <div className="w-full md:w-40 h-40 bg-gray-700 rounded-md flex items-center justify-center">

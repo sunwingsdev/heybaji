@@ -1,18 +1,21 @@
+import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import Footer from "../components/shared/footer/footer";
-import Navbar from "../components/shared/navbar/Navbar";
+import { useToasts } from "react-toast-notifications";
+import Footer from "../components/shared/footer/Footer";
+import Navbar from './../components/shared/navbar/Navbar';
 import SidebarMenu from "../components/shared/sidebarMenu/SidebarMenu";
-import { useState } from "react";
 import { IoIosCloseCircle } from "react-icons/io";
 import sticker from "../assets/sticker.gif";
-
-// import MobileMenu from "../components/home/MobileMenu";
 
 const MainLayout = () => {
   const [open, setOpen] = useState(false);
   const [isStickerOpen, setIsStickerOpen] = useState(true);
+  const [menuItems, setMenuItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { addToast } = useToasts();
 
-  const menuItems = [
+  // Static menu items (non-dynamic)
+  const staticMenuItems = [
     {
       name: "হোম",
       icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/theme-icon/icon-home.png?v=1737700451320",
@@ -20,385 +23,20 @@ const MainLayout = () => {
       submenu: [],
     },
     {
-      name: "হট গেমস",
-      icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/theme-icon/icon-hotgame.png?v=1737700451320",
-      submenu: [
-        {
-          name: "9WICKETS",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/sports-icon/icon-9w.png?v=1735560346274",
-        },
-        {
-          name: "CRAZYTIME",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-crazytime.png?v=1735560346274",
-        },
-        {
-          name: "AVIATOR",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-aviator.png?v=1735560346274",
-          demo: "/games/demo/aviator",
-        },
-        {
-          name: "SUPERACE",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-superace.png?v=1735560346274",
-          demo: "/games/demo/super-ace",
-        },
-        {
-          name: "MONEY COMING",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-moneycoming.png?v=1735560346274",
-        },
-        {
-          name: "ANDAR BAHAR",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-andarbahar.png?v=1735560346274",
-        },
-        {
-          name: "SEXY BACCARAT",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-sexybacarratclassic.png?v=1735560346274",
-        },
-        {
-          name: "7UP7DOWN",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-7up7down2.png?v=1735560346274",
-        },
-      ],
-    },
-    {
-      name: "স্পোর্টস",
-      icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/theme-icon/icon-sport.png?v=1737700451320",
-      submenu: [
-        {
-          name: "9WICKETS",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/sports-icon/icon-exchange.png?v=1735560346274",
-        },
-        {
-          name: "SBO",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/sports-icon/icon-sbov2.png?v=1735560346274",
-        },
-        {
-          name: "SABA",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-saba.png?v=1735560346274",
-        },
-        {
-          name: "CMD",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/sports-icon/icon-cmd.png?v=1735560346274",
-        },
-        {
-          name: "BTI",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/sports-icon/icon-sbtech.png?v=1735560346274",
-        },
-        {
-          name: "HORSE",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/sports-icon/icon-horsebook.png?v=1735560346274",
-        },
-        {
-          name: "SV388",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/sports-icon/icon-awcmrwb.png?v=1735560346274",
-        },
-        {
-          name: "RWB",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/sports-icon/icon-nst.png?v=1735560346274",
-        },
-        {
-          name: "PINNACLE",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/sports-icon/icon-awcmpinnacle.png?v=1735560346274",
-        },
-      ],
-    },
-    {
-      name: "স্লট",
-      icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/theme-icon/icon-slot.png?v=1737700451320",
-      submenu: [
-        {
-          name: "JILI",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmjili.png?v=1735560346274",
-        },
-        {
-          name: "PG",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-pg.png?v=1735560346274",
-        },
-        {
-          name: "JDB",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-jdb.png?v=1735560346274",
-        },
-        {
-          name: "FASTSPIN",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmfastspin.png?v=1735560346274",
-        },
-        {
-          name: "PLAY8",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmp8.png?v=1735560346274",
-        },
-        {
-          name: "REDTIGER",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmrt.png?v=1735560346274",
-        },
-        {
-          name: "SG",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmsg.png?v=1735560346274",
-        },
-        {
-          name: "CQ9",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-cq9.png?v=1735560346274",
-        },
-        {
-          name: "FC",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmfc.png?v=1735560346274",
-        },
-        {
-          name: "KA",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-ka.png?v=1735560346274",
-        },
-        {
-          name: "PP",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmpp.png?v=1735560346274",
-        },
-        {
-          name: "PT",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmpt.png?v=1735560346274",
-        },
-        {
-          name: "NETENT",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-netent.png?v=1735560346274",
-        },
-        {
-          name: "JOKER",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-joker.png?v=1735560346274",
-        },
-        {
-          name: "PNG",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-playngo.png?v=1735560346274",
-        },
-        {
-          name: "NEXTSPIN",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-nextspin.png?v=1735560346274",
-        },
-        {
-          name: "RICH88",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-rich88.png?v=1735560346274",
-        },
-        {
-          name: "WORLDMATCH",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-worldmatch.png?v=1735560346274",
-        },
-        {
-          name: "YELLOWBAT",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmyesbingo.png?v=1735560346274",
-        },
-      ],
-    },
-    {
-      name: "ক্রাশ",
-      icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/theme-icon/icon-crash.png?v=1737700451320",
-      submenu: [
-        {
-          name: "AVIATOR",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-jdbaspribe.png?v=1735560346274",
-        },
-        {
-          name: "JILI",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmjili.png?v=1735560346274",
-        },
-        {
-          name: "KM",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmkm.png?v=1735560346274",
-        },
-        {
-          name: "PP",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmpp.png?v=1735560346274",
-        },
-      ],
-    },
-    {
-      name: "ক্যাসিনো",
-      icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/theme-icon/icon-casino.png?v=1737700451320",
-      submenu: [
-        {
-          name: "EVO",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-evo.png?v=1735560346274",
-        },
-        {
-          name: "SEXY",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmsexy.png?v=1735560346274",
-        },
-        {
-          name: "PP",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmpp.png?v=1735560346274",
-        },
-        {
-          name: "PT",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmpt.png?v=1735560346274",
-        },
-        {
-          name: "HOTROAD",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmhotroad.png?v=1735560346274",
-        },
-        {
-          name: "DG",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmdg.png?v=1735560346274",
-        },
-      ],
-    },
-    {
-      name: "টেবিল",
-      icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/theme-icon/icon-table.png?v=1737700451320",
-      submenu: [
-        {
-          name: "JILI",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmjili.png?v=1735560346274",
-        },
-        {
-          name: "KM",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmkm.png?v=1735560346274",
-        },
-        {
-          name: "RICH88",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-rich88.png?v=1735560346274",
-        },
-        {
-          name: "SPRIBE",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-jdbaspribe.png?v=1735560346274",
-        },
-        {
-          name: "PG",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-pg.png?v=1735560346274",
-        },
-        {
-          name: "WORLDMATCH",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-worldmatch.png?v=1735560346274",
-        },
-        {
-          name: "KA",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-ka.png?v=1735560346274",
-        },
-        {
-          name: "CQ9",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-cq9.png?v=1735560346274",
-        },
-        {
-          name: "PNG",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-cq9.png?v=1735560346274",
-        },
-        {
-          name: "BPOKER",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-bpoker.png?v=1735560346274",
-        },
-        {
-          name: "MONOPOLY",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-monopoly.png?v=1735560346274",
-        },
-      ],
-    },
-    {
-      name: "লটারি",
-      icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/theme-icon/icon-lottery.png?v=1737700451320",
-      submenu: [
-        {
-          name: "AVIATOR",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-jdbaspribe.png?v=1735560346274",
-        },
-        {
-          name: "JILI",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmjili.png?v=1735560346274",
-        },
-        {
-          name: "KM",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmkm.png?v=1735560346274",
-        },
-        {
-          name: "PP",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmpp.png?v=1735560346274",
-        },
-      ],
-    },
-    {
-      name: "ফিসিং",
-      icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/theme-icon/icon-fish.png?v=1737700451320",
-      submenu: [
-        {
-          name: "EVO",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-evo.png?v=1735560346274",
-        },
-        {
-          name: "SEXY",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmsexy.png?v=1735560346274",
-        },
-        {
-          name: "PP",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmpp.png?v=1735560346274",
-        },
-        {
-          name: "PT",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmpt.png?v=1735560346274",
-        },
-        {
-          name: "HOTROAD",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmhotroad.png?v=1735560346274",
-        },
-        {
-          name: "DG",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmdg.png?v=1735560346274",
-        },
-      ],
-    },
-    {
-      name: "আর্কেড",
-      icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/theme-icon/icon-arcade.png?v=1737700451320",
-      submenu: [
-        {
-          name: "JILI",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmjili.png?v=1735560346274",
-        },
-        {
-          name: "KM",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-awcmkm.png?v=1735560346274",
-        },
-        {
-          name: "RICH88",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-rich88.png?v=1735560346274",
-        },
-        {
-          name: "SPRIBE",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-jdbaspribe.png?v=1735560346274",
-        },
-        {
-          name: "PG",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-pg.png?v=1735560346274",
-        },
-        {
-          name: "WORLDMATCH",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-worldmatch.png?v=1735560346274",
-        },
-        {
-          name: "KA",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-ka.png?v=1735560346274",
-        },
-        {
-          name: "CQ9",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-cq9.png?v=1735560346274",
-        },
-        {
-          name: "PNG",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-cq9.png?v=1735560346274",
-        },
-        {
-          name: "BPOKER",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-bpoker.png?v=1735560346274",
-        },
-        {
-          name: "MONOPOLY",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/brand/white/provider-monopoly.png?v=1735560346274",
-        },
-      ],
-    },
-    {
-      name: "প্রোমোশনস",
+      name: "প্রোমোশন",
       icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/theme-icon/icon-promotion.png?v=1737700451320",
       path: "/promotion",
+      submenu: [],
     },
     {
       name: "রেফার বোনাস",
       icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/theme-icon/icon-referral.png?v=1737700451320",
+      submenu: [],
     },
     {
       name: "ডাউনলোড",
       icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/theme-icon/icon-download.png?v=1737700451320",
+      submenu: [],
     },
     {
       name: "যোগাযোগ",
@@ -418,11 +56,102 @@ const MainLayout = () => {
         },
         {
           name: "Email",
-          icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/theme-icon/icon-email.png?v=1735560346274",
+          icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/theme-icon/icon-email.png?v=1737700451320",
         },
       ],
     },
   ];
+
+  // Fetch dynamic menu items
+  useEffect(() => {
+    const fetchMenuItems = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_BASE_API_URL}/game-main-categories`,
+          {
+
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch menu items");
+        }
+
+        const data = await response.json();
+        // console.log("Fetched menu data:", JSON.stringify(data, null, 2)); // Debug
+
+        // Transform data to menuItems structure
+        const dynamicMenu = Object.values(
+          data.reduce((acc, item) => {
+            const category = item.category || "Unknown";
+            const subcategory = item.subcategory || null;
+            if (!acc[category]) {
+              acc[category] = {
+                name: category,
+                icon:
+                  item.image ||
+                  "https://img.d4040p.com/dp/h5/assets/images/icon-set/theme-icon/icon-default.png",
+                submenu: [],
+              };
+            }
+            if (subcategory) {
+              acc[category].submenu.push({
+                name: subcategory,
+                icon:
+                  item.submenuIcon ||
+                  "https://img.d4040p.com/dp/h5/assets/images/icon-set/theme-icon/icon-subdefault.png",
+                path: `/game/category/${encodeURIComponent(subcategory)}`,
+              });
+            }
+            return acc;
+          }, {})
+        );
+
+        // Sort categories and subcategories by order
+        dynamicMenu.forEach((category) => {
+          category.submenu.sort((a, b) => {
+            const orderA = data.find(
+              (item) => item.category === category.name && item.subcategory === a.name
+            )?.order || 0;
+            const orderB = data.find(
+              (item) => item.category === category.name && item.subcategory === b.name
+            )?.order || 0;
+            return orderA - orderB || a.name.localeCompare(b.name);
+          });
+        });
+        dynamicMenu.sort((a, b) => {
+          const orderA = data.find((item) => item.category === a.name)?.order || 0;
+          const orderB = data.find((item) => item.category === b.name)?.order || 0;
+          return orderA - orderB || a.name.localeCompare(b.name);
+        });
+
+        // Combine static and dynamic menu items
+        setMenuItems([...staticMenuItems, ...dynamicMenu]);
+      } catch (err) {
+        console.error("Error fetching menu items:", err);
+        addToast("Failed to load menu items", { appearance: "error" });
+        // Fallback to static items
+        setMenuItems(staticMenuItems);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMenuItems();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-SiteBg">
+        <p className="text-white text-xl">Loading menu...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex relative">
@@ -436,15 +165,13 @@ const MainLayout = () => {
         }`}
       >
         <Navbar open={open} setOpen={setOpen} menuItems={menuItems} />
-        <div className="mt-[62px] md:mt-16 md:px-40 bg-SiteBg">
+        <div className="mt-[62px] md:mt-16 md:px-4 bg-SiteBg">
           <Outlet />
           <Footer />
         </div>
-
-        {/* {!hideCommonComponents && <MobileMenu />} */}
       </div>
 
-      {/* sticker */}
+      {/* Sticker */}
       {isStickerOpen && (
         <div className="absolute bottom-11 md:bottom-3 left-2 md:left-8 z-50">
           <div className="flex justify-end">
@@ -455,7 +182,7 @@ const MainLayout = () => {
               <IoIosCloseCircle />
             </button>
           </div>
-          <img className="w-24 md:w-40" src={sticker} alt="" />
+          <img className="w-24 md:w-40" src={sticker} alt="Sticker" />
         </div>
       )}
     </div>

@@ -113,7 +113,7 @@ const gameNameApi = (gameNameCollection,homeControlsCollection) => {
         return res.status(404).send({ message: "Game not found" });
       }
 
-      if (game.image && game.image !== "/Uploads/images/default.png") {
+      if (game.image && game.image !== "") {
         try {
           await deleteFile(game.image);
         } catch (err) {

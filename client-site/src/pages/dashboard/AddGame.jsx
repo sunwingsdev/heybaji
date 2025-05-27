@@ -13,7 +13,7 @@ const GameName = () => {
     title: "",
     category: "",
     subcategory: "",
-    image: "/Uploads/images/default.png",
+    image: "",
     link: "",
     isActive: true,
   });
@@ -103,7 +103,7 @@ const GameName = () => {
       title: "",
       category: "",
       subcategory: "",
-      image: "/Uploads/images/default.png",
+      image: "",
       link: "",
       isActive: true,
     });
@@ -118,7 +118,7 @@ const GameName = () => {
       title: item.title || "",
       category: item.category || "",
       subcategory: item.subcategory || "",
-      image: item.image || "/Uploads/images/default.png",
+      image: item.image || "",
       link: item.link || "",
       isActive: item.isActive || false,
     });
@@ -209,7 +209,7 @@ const GameName = () => {
         title: "",
         category: "",
         subcategory: "",
-        image: "/Uploads/images/default.png",
+        image: "",
         link: "",
         isActive: true,
       });

@@ -11,16 +11,27 @@ const GameCategories = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [formData, setFormData] = useState({
-    image: "/Uploads/images/default-image.png",
+    image: "",
     category: "CASINO",
     subcategory: "",
-    submenuIcon: "/Uploads/images/default-icon.png",
+    submenuIcon: "",
   });
   const [editId, setEditId] = useState(null);
   const [imageLoading, setImageLoading] = useState({
     image: false,
     submenuIcon: false,
   });
+  const [categoryDetails, setCategoryDetails] = useState([]);
+  const [categoryDetailForm, setCategoryDetailForm] = useState({
+    category: "CASINO",
+    gamePageBanner: "",
+    gamePageBannerTitle: "",
+    gamePageAmount: "",
+  });
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [isDetailEditMode, setIsDetailEditMode] = useState(false);
+  const [detailEditId, setDetailEditId] = useState(null);
+  const [detailImageLoading, setDetailImageLoading] = useState(false);
   const { addToast } = useToasts();
 
   // Valid categories for dropdown
@@ -80,7 +91,32 @@ const GameCategories = () => {
         setLoading(false);
       }
     };
+
+    const fetchCategoryDetails = async () => {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_BASE_API_URL}/game-main-categories/category-details`,
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch category details");
+        }
+
+        const result = await response.json();
+        console.log("Fetched category details:", JSON.stringify(result, null, 2));
+        setCategoryDetails(result);
+      } catch (error) {
+        console.error("Error fetching category details:", error);
+        addToast("Failed to fetch category details", { appearance: "error" });
+      }
+    };
+
     fetchData();
+    fetchCategoryDetails();
   }, [addToast]);
 
   // Handle sortable list update
@@ -157,10 +193,10 @@ const GameCategories = () => {
     setIsModalOpen(true);
     setIsEditMode(false);
     setFormData({
-      image: "/Uploads/images/default-image.png",
+      image: "",
       category: "CASINO",
       subcategory: "",
-      submenuIcon: "/Uploads/images/default-icon.png",
+      submenuIcon: "",
     });
     setEditId(null);
     setImageLoading({ image: false, submenuIcon: false });
@@ -172,18 +208,38 @@ const GameCategories = () => {
     setIsEditMode(true);
     setEditId(item._id);
     setFormData({
-      image: item.image || "/Uploads/images/default-image.png",
+      image: item.image || "",
       category: item.category || "CASINO",
       subcategory: item.subcategory || "",
-      submenuIcon: item.submenuIcon || "/Uploads/images/default-icon.png",
+      submenuIcon: item.submenuIcon || "",
     });
     setImageLoading({ image: false, submenuIcon: false });
+  };
+
+  // Open modal for adding/editing category details
+  const openDetailModal = (item = null) => {
+    setIsDetailModalOpen(true);
+    setIsDetailEditMode(!!item);
+    setDetailEditId(item ? item._id : null);
+    setCategoryDetailForm({
+      category: item ? item.category : "CASINO",
+      gamePageBanner: item ? item.gamePageBanner || "" : "",
+      gamePageBannerTitle: item ? item.gamePageBannerTitle || "" : "",
+      gamePageAmount: item ? item.gamePageAmount || "" : "",
+    });
+    setDetailImageLoading(false);
   };
 
   // Handle form input change
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Handle category detail input change
+  const handleDetailInputChange = (e) => {
+    const { name, value } = e.target;
+    setCategoryDetailForm((prev) => ({ ...prev, [name]: value }));
   };
 
   // Handle file upload
@@ -219,6 +275,40 @@ const GameCategories = () => {
       addToast(`Failed to upload ${field}`, { appearance: "error" });
     } finally {
       setImageLoading((prev) => ({ ...prev, [field]: false }));
+    }
+  };
+
+  // Handle category detail file upload
+  const handleDetailFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setDetailImageLoading(true);
+
+    const uploadFormData = new FormData();
+    uploadFormData.append("image", file);
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_BASE_API_URL}/upload`,
+        {
+          method: "POST",
+          body: uploadFormData,
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to upload game page banner");
+      }
+
+      const result = await response.json();
+      setCategoryDetailForm((prev) => ({ ...prev, gamePageBanner: result.filePath }));
+      addToast("Game Page Banner uploaded successfully", { appearance: "success" });
+    } catch (error) {
+      console.error("Error uploading game page banner:", error);
+      addToast("Failed to upload game page banner", { appearance: "error" });
+    } finally {
+      setDetailImageLoading(false);
     }
   };
 
@@ -264,16 +354,88 @@ const GameCategories = () => {
 
       setIsModalOpen(false);
       setFormData({
-        image: "/Uploads/images/default-image.png",
+        image: "",
         category: "CASINO",
         subcategory: "",
-        submenuIcon: "/Uploads/images/default-icon.png",
+        submenuIcon: "",
       });
       setEditId(null);
       setImageLoading({ image: false, submenuIcon: false });
     } catch (error) {
       console.error(`Error ${isEditMode ? "updating" : "adding"} category:`, error);
       addToast(`Failed to ${isEditMode ? "update" : "add"} category`, { appearance: "error" });
+    }
+  };
+
+  // Handle category detail form submit
+  const handleDetailFormSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const url = isDetailEditMode
+        ? `${import.meta.env.VITE_BASE_API_URL}/game-main-categories/category-details/${detailEditId}`
+        : `${import.meta.env.VITE_BASE_API_URL}/game-main-categories/category-details`;
+      const method = isDetailEditMode ? "PUT" : "POST";
+
+      const response = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(categoryDetailForm),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to ${isDetailEditMode ? "update" : "save"} category details`);
+      }
+
+      const result = await response.json();
+      setCategoryDetails((prev) => {
+        if (isDetailEditMode) {
+          return prev.map((item) => (item._id === result._id ? result : item));
+        }
+        return [...prev, result];
+      });
+      addToast(`Category details ${isDetailEditMode ? "updated" : "saved"} successfully`, {
+        appearance: "success",
+      });
+
+      setIsDetailModalOpen(false);
+      setCategoryDetailForm({
+        category: "CASINO",
+        gamePageBanner: "",
+        gamePageBannerTitle: "",
+        gamePageAmount: "",
+      });
+      setDetailEditId(null);
+      setDetailImageLoading(false);
+    } catch (error) {
+      console.error(`Error ${isDetailEditMode ? "updating" : "saving"} category details:`, error);
+      addToast(`Failed to ${isDetailEditMode ? "update" : "save"} category details`, {
+        appearance: "error",
+      });
+    }
+  };
+
+  // Handle delete category detail
+  const handleDeleteCategoryDetail = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this category detail?")) return;
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_BASE_API_URL}/game-main-categories/category-details/${id}`,
+        {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to delete category detail");
+      }
+
+      setCategoryDetails((prev) => prev.filter((item) => item._id !== id));
+      addToast("Category detail deleted successfully", { appearance: "success" });
+    } catch (error) {
+      console.error("Error deleting category detail:", error);
+      addToast("Failed to delete category detail", { appearance: "error" });
     }
   };
 
@@ -399,7 +561,82 @@ const GameCategories = () => {
         </div>
       </div>
 
-      {/* Modal */}
+      {/* Category Details Section */}
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold mb-2">Category Details</h2>
+        <div className="bg-[#222222] p-4 rounded-md">
+          <button
+            className="bg-yellow-500 hover:bg-yellow-600 text-black py-2 px-4 rounded-md mb-4"
+            onClick={() => openDetailModal()}
+          >
+            Add Category Details
+          </button>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse border border-[#3b3b3b] text-center">
+              <thead>
+                <tr className="bg-[#3b3b3b] text-white">
+                  <th className="px-4 py-2 whitespace-nowrap">Category</th>
+                  <th className="px-4 py-2 whitespace-nowrap">Game Page Banner</th>
+                  <th className="px-4 py-2 whitespace-nowrap">Game Page Banner Title</th>
+                  <th className="px-4 py-2 whitespace-nowrap">Game Page Amount</th>
+                  <th className="px-4 py-2 whitespace-nowrap">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {categoryDetails.length === 0 ? (
+                  <tr>
+                    <td colSpan="5" className="text-center py-4 text-gray-400">
+                      No category details found.
+                    </td>
+                  </tr>
+                ) : (
+                  categoryDetails.map((item, index) => (
+                    <tr
+                      key={item._id}
+                      className={`${index % 2 === 0 ? "bg-gray-100" : "bg-[#cacaca]"} text-black`}
+                    >
+                      <td className="px-4 py-2 whitespace-nowrap">{item.category}</td>
+                      <td className="px-4 py-2 whitespace-nowrap">
+                        {item.gamePageBanner ? (
+                          <img
+                            src={`${import.meta.env.VITE_BASE_API_URL}${item.gamePageBanner}`}
+                            alt="Game Page Banner"
+                            className="w-16 h-16 object-cover mx-auto"
+                            onError={(e) => {
+                              e.target.src = "";
+                              e.target.onerror = null;
+                            }}
+                          />
+                        ) : (
+                          "N/A"
+                        )}
+                      </td>
+                      <td className="px-4 py-2 whitespace-nowrap">{item.gamePageBannerTitle || "N/A"}</td>
+                      <td className="px-4 py-2 whitespace-nowrap">{item.gamePageAmount || "N/A"}</td>
+                      <td className="px-4 py-2 whitespace-nowrap">
+                        <button
+                          className="bg-blue-500 hover:bg-blue-600 transition text-white py-1 px-3 rounded mr-2"
+                          onClick={() => openDetailModal(item)}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="bg-red-500 hover:bg-red-600 transition text-white py-1 px-3 rounded"
+                          onClick={() => handleDeleteCategoryDetail(item._id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      {/* Category Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-gray-800 p-6 rounded-lg w-full max-w-md text-white">
@@ -423,10 +660,6 @@ const GameCategories = () => {
                     src={`${import.meta.env.VITE_BASE_API_URL}${formData.image}`}
                     alt="Preview"
                     className="mt-2 w-24 h-24 object-cover"
-                    // onError={(e) => {
-                    //   e.target.src = "/Uploads/images/default-image.png";
-                    //   e.target.onerror = null;
-                    // }}
                   />
                 ) : (
                   <p className="mt-2 text-gray-400">
@@ -449,10 +682,6 @@ const GameCategories = () => {
                     src={`${import.meta.env.VITE_BASE_API_URL}${formData.submenuIcon}`}
                     alt="Submenu Icon Preview"
                     className="mt-2 w-24 h-24 object-cover"
-                    // onError={(e) => {
-                    //   e.target.src = "/Uploads/images/default-icon.png";
-                    //   e.target.onerror = null;
-                    // }}
                   />
                 ) : (
                   <p className="mt-2 text-gray-400">
@@ -512,7 +741,102 @@ const GameCategories = () => {
         </div>
       )}
 
-      {/* Table */}
+      {/* Category Details Modal */}
+      {isDetailModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-gray-800 p-6 rounded-lg w-full max-w-md text-white">
+            <h2 className="text-xl font-bold mb-4">
+              {isDetailEditMode ? "Edit Category Details" : "Add Category Details"}
+            </h2>
+            <form onSubmit={handleDetailFormSubmit}>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-300">
+                  Category
+                </label>
+                <select
+                  name="category"
+                  value={categoryDetailForm.category}
+                  onChange={handleDetailInputChange}
+                  className="mt-1 p-2 w-full border rounded-md bg-gray-700 text-white border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                  required
+                  disabled={isDetailEditMode}
+                >
+                  {validCategories.map((cat) => (
+                    <option key={cat} value={cat} className="bg-gray-700 text-white">
+                      {cat}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-300">
+                  Game Page Banner
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleDetailFileChange}
+                  className="mt-1 p-2 w-full border rounded-md bg-gray-700 text-white border-gray-600"
+                />
+                {categoryDetailForm.gamePageBanner && !detailImageLoading ? (
+                  <img
+                    src={`${import.meta.env.VITE_BASE_API_URL}${categoryDetailForm.gamePageBanner}`}
+                    alt="Game Page Banner Preview"
+                    className="mt-2 w-24 h-24 object-cover"
+                  />
+                ) : (
+                  <p className="mt-2 text-gray-400">
+                    {detailImageLoading ? "Loading..." : "No game page banner selected"}
+                  </p>
+                )}
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-300">
+                  Game Page Banner Title
+                </label>
+                <input
+                  type="text"
+                  name="gamePageBannerTitle"
+                  value={categoryDetailForm.gamePageBannerTitle}
+                  onChange={handleDetailInputChange}
+                  className="mt-1 p-2 w-full border rounded-md bg-gray-700 text-white border-gray-600"
+                  placeholder="Enter game page banner title"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-300">
+                  Game Page Amount
+                </label>
+                <input
+                  type="text"
+                  name="gamePageAmount"
+                  value={categoryDetailForm.gamePageAmount}
+                  onChange={handleDetailInputChange}
+                  className="mt-1 p-2 w-full border rounded-md bg-gray-700 text-white border-gray-600"
+                  placeholder="Enter game page amount"
+                />
+              </div>
+              <div className="flex justify-end gap-4">
+                <button
+                  type="button"
+                  className="bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded-md"
+                  onClick={() => setIsDetailModalOpen(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="bg-yellow-500 hover:bg-yellow-600 text-black py-2 px-4 rounded-md"
+                >
+                  {isDetailEditMode ? "Update" : "Add"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Main Categories Table */}
       <div className="overflow-x-auto">
         <table className="w-full border-collapse border border-[#3b3b3b] text-center">
           <thead>
@@ -521,6 +845,9 @@ const GameCategories = () => {
               <th className="px-4 py-2 whitespace-nowrap">Submenu Icon</th>
               <th className="px-4 py-2 whitespace-nowrap">Category</th>
               <th className="px-4 py-2 whitespace-nowrap">Subcategory</th>
+              <th className="px-4 py-2 whitespace-nowrap">Game Page Banner</th>
+              <th className="px-4 py-2 whitespace-nowrap">Game Page Banner Title</th>
+              <th className="px-4 py-2 whitespace-nowrap">Game Page Amount</th>
               <th className="px-4 py-2 whitespace-nowrap">Created At</th>
               <th className="px-4 py-2 whitespace-nowrap">Action</th>
             </tr>
@@ -528,69 +855,91 @@ const GameCategories = () => {
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan="6" className="text-center py-4 text-gray-400">
+                <td colSpan="9" className="text-center py-4 text-gray-400">
                   Loading...
                 </td>
               </tr>
             ) : filteredData.length === 0 ? (
               <tr>
-                <td colSpan="6" className="text-center py-4 text-gray-400">
+                <td colSpan="9" className="text-center py-4 text-gray-400">
                   No game main categories found.
                 </td>
               </tr>
             ) : (
-              filteredData.map((item, index) => (
-                <tr
-                  key={item._id}
-                  className={`${index % 2 === 0 ? "bg-gray-100" : "bg-[#cacaca]"} text-black`}
-                >
-                  <td className="px-4 py-2 whitespace-nowrap">
-                    <img
-                      src={`${import.meta.env.VITE_BASE_API_URL}${item.image}`}
-                      alt="Category"
-                      className="w-16 h-16 object-cover mx-auto"
-                      onError={(e) => {
-                        e.target.src = "/Uploads/images/default-image.png";
-                        e.target.onerror = null;
-                      }}
-                    />
-                  </td>
-                  <td className="px-4 py-2 whitespace-nowrap">
-                    <img
-                      src={`${import.meta.env.VITE_BASE_API_URL}${
-                        item.submenuIcon || "/Uploads/images/default-icon.png"
-                      }`}
-                      alt="Submenu Icon"
-                      className="w-16 h-16 object-cover mx-auto"
-                      onError={(e) => {
-                        e.target.src = "/Uploads/images/default-icon.png";
-                        e.target.onerror = null;
-                      }}
-                    />
-                  </td>
-                  <td className="px-4 py-2 whitespace-nowrap">{item.category || "N/A"}</td>
-                  <td className="px-4 py-2 whitespace-nowrap">{item.subcategory || "N/A"}</td>
-                  <td className="px-4 py-2 whitespace-nowrap">
-                    {item.createdAt
-                      ? new Date(item.createdAt).toLocaleDateString()
-                      : "N/A"}
-                  </td>
-                  <td className="px-4 py-2 whitespace-nowrap">
-                    <button
-                      className="bg-blue-500 hover:bg-blue-600 transition text-white py-1 px-3 rounded mr-2"
-                      onClick={() => openEditModal(item)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="bg-red-500 hover:bg-red-600 transition text-white py-1 px-3 rounded"
-                      onClick={() => handleDeleteCategory(item._id)}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))
+              filteredData.map((item, index) => {
+                const detail = categoryDetails.find(
+                  (detail) => detail.category === item.category
+                );
+                return (
+                  <tr
+                    key={item._id}
+                    className={`${index % 2 === 0 ? "bg-gray-100" : "bg-[#cacaca]"} text-black`}
+                  >
+                    <td className="px-4 py-2 whitespace-nowrap">
+                      <img
+                        src={`${import.meta.env.VITE_BASE_API_URL}${item.image}`}
+                        alt="Category"
+                        className="w-16 h-16 object-cover mx-auto"
+                      />
+                    </td>
+                    <td className="px-4 py-2 whitespace-nowrap">
+                      <img
+                        src={`${import.meta.env.VITE_BASE_API_URL}${
+                          item.submenuIcon || ""
+                        }`}
+                        alt="Submenu Icon"
+                        className="w-16 h-16 object-cover mx-auto"
+                        onError={(e) => {
+                          e.target.src = "";
+                          e.target.onerror = null;
+                        }}
+                      />
+                    </td>
+                    <td className="px-4 py-2 whitespace-nowrap">{item.category || "N/A"}</td>
+                    <td className="px-4 py-2 whitespace-nowrap">{item.subcategory || "N/A"}</td>
+                    <td className="px-4 py-2 whitespace-nowrap">
+                      {detail?.gamePageBanner ? (
+                        <img
+                          src={`${import.meta.env.VITE_BASE_API_URL}${detail.gamePageBanner}`}
+                          alt="Game Page Banner"
+                          className="w-16 h-16 object-cover mx-auto"
+                          onError={(e) => {
+                            e.target.src = "";
+                            e.target.onerror = null;
+                          }}
+                        />
+                      ) : (
+                        "N/A"
+                      )}
+                    </td>
+                    <td className="px-4 py-2 whitespace-nowrap">
+                      {detail?.gamePageBannerTitle || "N/A"}
+                    </td>
+                    <td className="px-4 py-2 whitespace-nowrap">
+                      {detail?.gamePageAmount || "N/A"}
+                    </td>
+                    <td className="px-4 py-2 whitespace-nowrap">
+                      {item.createdAt
+                        ? new Date(item.createdAt).toLocaleDateString()
+                        : "N/A"}
+                    </td>
+                    <td className="px-4 py-2 whitespace-nowrap">
+                      <button
+                        className="bg-blue-500 hover:bg-blue-600 transition text-white py-1 px-3 rounded mr-2"
+                        onClick={() => openEditModal(item)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="bg-red-500 hover:bg-red-600 transition text-white py-1 px-3 rounded"
+                        onClick={() => handleDeleteCategory(item._id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })
             )}
           </tbody>
         </table>

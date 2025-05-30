@@ -55,6 +55,7 @@ import GameName from "../pages/dashboard/AddGame.jsx";
 import GamePageFeatured from "../pages/GamePage/GamePageFeatured.jsx";
 import GamePageCategory from "../pages/GamePage/GamePageCategory.jsx";
 import SingleGameView from "../pages/GamePage/SingleGameView.jsx";
+import WithdrawsMethod from "../pages/dashboard/WithdrawsMethod.jsx";
 
 const router = createBrowserRouter([
   {
@@ -124,6 +125,8 @@ const router = createBrowserRouter([
       { path: "manage-pages", element: <ManagePages /> },
       { path: "viewagentprofile/:id", element: <AgentProfileView /> },
       { path: "commissionsetting", element: <CommissionSetting /> },
+      { path: "withdrawsMethod", element: <WithdrawsMethod /> },
+      { path: "withdrawsHistory", element: <WithdrawHistory /> },
     ],
   },
   {

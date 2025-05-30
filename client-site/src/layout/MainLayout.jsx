@@ -161,11 +161,11 @@ const MainLayout = () => {
       {/* Content Area */}
       <div
         className={`flex-1 h-screen overflow-y-auto duration-300 ${
-          !open ? "md:pl-16" : "md:pl-64"
+          !open ? "md:pl-16" : "md:pl-64" // not working 
         }`}
       >
         <Navbar open={open} setOpen={setOpen} menuItems={menuItems} />
-        <div className="mt-[62px] md:mt-16 md:px-4 bg-SiteBg">
+        <div className="mt-[62px] md:mt-16 md:px-4 bg-SiteBg ">
           <Outlet />
           <Footer />
         </div>

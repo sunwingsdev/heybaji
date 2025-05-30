@@ -6,7 +6,8 @@ import BannerSlider from "../../components/shared/bannerSlider/BannerSlider";
 
 const Home = () => {
   return (
-    <div>
+    <div >
+
       <BannerSlider />
       <div className="md:px-4 bg-SiteBg">
         <MarqueeSlider />

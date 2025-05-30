@@ -29,7 +29,9 @@ const LogoSelection = () => {
   const handleDelete = async () => {
     try {
       const { message } = await deleteImage(item?.image);
-      if (message) {
+      if (
+        message
+      ) {
         try {
           const result = await deleteHomeControl(item?._id);
           if (result.data.deletedCount > 0) {

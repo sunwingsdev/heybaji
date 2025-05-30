@@ -7,19 +7,23 @@ import { Check } from "lucide-react";
 import { BsFillPatchExclamationFill } from "react-icons/bs";
 import { useToasts } from "react-toast-notifications";
 import DepositLastPage from "./DepositLastPage";
+import WithdrawLastPage from "./WithdrawLastPage"; // New component
 import { useGetRandomNumberQuery } from "../../../redux/features/allApis/paymentNumberApi/paymentNumberApi";
 import { uploadImage } from "../../../hooks/files";
 import { useAddDepositMutation } from "../../../redux/features/allApis/depositsApi/depositsApi";
+import { useAddWithdrawMutation } from "../../../redux/features/allApis/withdrawsApi/withdrawsApi"; // New mutation
 import { useSelector } from "react-redux";
 
-const depositChannels = ["expay", "autopay", "send money"];
+
 const amounts = [200, 500, 1000, 5000, 10000, 15000, 20000, 25000];
+
 const DepositModal = ({ closeDepositModal }) => {
   const { user } = useSelector((state) => state.auth);
-  const [addDeposit, { isLoading }] = useAddDepositMutation();
+  const [addDeposit, { isLoading: isDepositLoading }] = useAddDepositMutation();
+  const [addWithdraw, { isLoading: isWithdrawLoading }] = useAddWithdrawMutation(); // New mutation
   const { data: promotions } = useGetPromotionsQuery();
-  const [tempInputValues, setTempInputValues] = useState({});
   const { data: paymentMethods } = useGetPaymentMethodsQuery();
+  const [tempInputValues, setTempInputValues] = useState({});
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [isFirstStep, setIsFirstStep] = useState(true);
   const [activeTabBottom, setActiveTabBottom] = useState("deposit");
@@ -31,6 +35,16 @@ const DepositModal = ({ closeDepositModal }) => {
     paymentInputs: [],
     userId: user?._id,
   });
+  
+const [depositChannels, setDepositChannels] = useState([]);
+
+
+  useEffect(() => {
+    setDepositChannels(
+      activeTabBottom === "deposit" ? [paymentMethod?.gateway === "BANK_TRANSFER" ? "Bank Transfer" : "MOBILE BANKING"] : [paymentMethod?.gateway === "BANK_TRANSFER" ? "Bank Transfer" : "MOBILE BANKING"]
+    );
+  }, [activeTabBottom , formData]);
+
 
   const { data: randomNumber, refetch } = useGetRandomNumberQuery(
     formData.paymentMethod.toLowerCase(),
@@ -38,24 +52,34 @@ const DepositModal = ({ closeDepositModal }) => {
   );
   const { addToast } = useToasts();
 
+  // Filter deposit and withdrawal methods
   const depositMethods = paymentMethods?.filter(
     (method) => method?.status === "active" && method?.paymentType === "deposit"
+  );
+  const withdrawalMethods = paymentMethods?.filter(
+    (method) => method?.status === "active" && method?.paymentType === "withdraw"
   );
 
   const bonusPromotions = promotions?.filter(
     (promotion) => promotion.bonus === "bonus"
   );
 
-  // Set the first deposit method as the initial payment method only once
+  // Set the first payment method based on active tab
   useEffect(() => {
-    if (depositMethods && depositMethods.length > 0 && !paymentMethod) {
+    if (activeTabBottom === "deposit" && depositMethods?.length > 0 && !paymentMethod) {
       setPaymentMethod(depositMethods[0]);
       setFormData((prevFormData) => ({
         ...prevFormData,
         paymentMethod: depositMethods[0]?.method,
       }));
+    } else if (activeTabBottom === "withdrawal" && withdrawalMethods?.length > 0 && !paymentMethod) {
+      setPaymentMethod(withdrawalMethods[0]);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        paymentMethod: withdrawalMethods[0]?.method,
+      }));
     }
-  }, [depositMethods, paymentMethod]);
+  }, [depositMethods, withdrawalMethods, activeTabBottom, paymentMethod]);
 
   const handleClick = (amount) => {
     setFormData({
@@ -65,34 +89,44 @@ const DepositModal = ({ closeDepositModal }) => {
   };
 
   const handleGoToNext = () => {
-    formData.amount && formData.depositChannel
-      ? setIsFirstStep(false)
-      : formData.depositChannel
-      ? addToast("Please select an amount", {
-          appearance: "error",
-          autoDismiss: true,
-        })
-      : addToast("Please select a deposit channel", {
-          appearance: "error",
-          autoDismiss: true,
-        });
+    if (!formData.amount) {
+      addToast("Please select an amount", {
+        appearance: "error",
+        autoDismiss: true,
+      });
+      return;
+    }
+    if (!formData.depositChannel) {
+      addToast("Please select a deposit channel", {
+        appearance: "error",
+        autoDismiss: true,
+      });
+      return;
+    }
+    if (activeTabBottom === "withdrawal" && formData.amount > user?.balance) {
+      addToast("Insufficient balance for withdrawal", {
+        appearance: "error",
+        autoDismiss: true,
+      });
+      return;
+    }
+    setIsFirstStep(false);
   };
 
   const handleInputChange = (name, value) => {
     setTempInputValues((prevValues) => ({
       ...prevValues,
-      [name]: value, // Update the temporary state
+      [name]: value,
     }));
   };
 
-  const handleSubmit = async () => {
+  const handleDepositSubmit = async () => {
     const paymentInputs = [];
     for (const [name, value] of Object.entries(tempInputValues)) {
       if (value instanceof File) {
         try {
           const { filePath } = await uploadImage(value);
           paymentInputs.push({ [name]: filePath });
-          // eslint-disable-next-line no-unused-vars
         } catch (error) {
           addToast("Failed to upload file. Please try again.", {
             appearance: "error",
@@ -111,34 +145,101 @@ const DepositModal = ({ closeDepositModal }) => {
 
     const result = await addDeposit(updatedFormData);
 
-    if (result.error) {
-      addToast(result.error.data.error, {
+    console.log(result);
+    
+
+
+    if (!result.ok) {
+      addToast("Failed to add deposit", {
         appearance: "error",
         autoDismiss: true,
       });
-    } else if (result.data.insertedId) {
+    } else if (result?.data?.insertedId) {
       addToast("Deposit added successfully", {
         appearance: "success",
         autoDismiss: true,
       });
-      // Reset form data and close modal
       setFormData({
         amount: 0,
         paymentMethod: "",
         depositChannel: "",
         bonusId: "",
         paymentInputs: [],
+        userId: user?._id,
       });
       closeDepositModal();
       refetch();
     }
   };
 
+  const handleWithdrawSubmit = async () => {
+    const paymentInputs = [];
+    for (const [name, value] of Object.entries(tempInputValues)) {
+      if (value instanceof File) {
+        try {
+          const { filePath } = await uploadImage(value);
+          paymentInputs.push({ [name]: filePath });
+        } catch (error) {
+          addToast("Failed to upload file. Please try again.", {
+            appearance: "error",
+            autoDismiss: true,
+          });
+          continue;
+        }
+      } else {
+        paymentInputs.push({ [name]: value });
+      }
+    }
+    const updatedFormData = {
+        ...formData,
+        paymentInputs: paymentInputs,
+      };
+
+      const response = await fetch(`${import.meta.env.VITE_BASE_API_URL}/withdraws`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedFormData),
+      });
+
+      const result = await response.json();
+    
+      console.log("-->> ",result.insertedId);
+      
+ 
+
+      if (result.insertedId) {
+      addToast("Withdrawal request submitted successfully", {
+        appearance: "success",
+        autoDismiss: true,
+      });
+      setFormData({
+        amount: 0,
+        paymentMethod: "",
+        depositChannel: "",
+        bonusId: "",
+        paymentInputs: [],
+        userId: user?._id,
+      });
+      closeDepositModal();
+      refetch();
+    }
+ 
+
+    if ( result.error) {
+      addToast( result?.error?.data?.message ||  result?.message  || "Failed to add withdrawal", {
+        appearance: "error",
+        autoDismiss: true,
+      });
+    } 
+  }
+
   return (
     <>
       <div className="fixed inset-0 bg-opacity-50 flex justify-center items-center z-50">
         <div className="w-full max-w-md bg-SidebarBg rounded-lg shadow-md flex flex-col overflow-y-auto max-h-svh relative">
-          {/* Close Button */}
           <button
             onClick={closeDepositModal}
             className="absolute top-2 md:top-4 right-2 md:right-4 text-[#fff] text-lg hover:text-red-600 duration-300"
@@ -148,10 +249,11 @@ const DepositModal = ({ closeDepositModal }) => {
           {isFirstStep ? (
             <div className="">
               <div className="flex justify-center items-center space-x-3 mt-4 px-4">
-                <p className="text-2xl font-bold text-white">Deposit</p>
+                <p className="text-2xl font-bold text-white">
+                  {activeTabBottom === "deposit" ? "Deposit" : "Withdrawal"}
+                </p>
               </div>
               <div className="">
-                {/* Deposit & Withdrawal button */}
                 <div className="flex py-3 px-6">
                   <button
                     onClick={() => setActiveTabBottom("deposit")}
@@ -175,253 +277,147 @@ const DepositModal = ({ closeDepositModal }) => {
                   </button>
                 </div>
 
-                <div className="bg-menuHoverActiveColor text-white text-sm flex items-center justify-between gap-2 py-2 px-5">
-                  <div className="flex gap-2 items-center">
-                    <img
-                      src="https://img.d4040p.com/dp/h5/assets/images/icon-set/icon-selectpromotion.svg?v=1737700451320"
-                      alt=""
-                    />
-                    <p className="whitespace-nowrap">Select Promotion</p>
-                  </div>
-                  <div className="flex flex-col items-start">
-                    <select
-                      id="bonusOption"
-                      className="w-full px-2 bg-menuHoverActiveColor focus:outline-none focus:border-transparent"
-                      onChange={(e) =>
-                        setFormData({ ...formData, bonusId: e.target.value })
-                      }
-                    >
-                      {" "}
-                      <option selected disabled value={""}>
-                        Select an option
-                      </option>
-                      {bonusPromotions?.map((item) => (
-                        <option key={item?._id} value={item?._id}>
-                          {item?.bonusTitle}
+                {activeTabBottom === "deposit" && (
+                  <div className="bg-menuHoverActiveColor text-white text-sm flex items-center justify-between gap-2 py-2 px-5">
+                    <div className="flex gap-2 items-center">
+                      <img
+                        src="https://img.d4040p.com/dp/h5/assets/images/icon-set/icon-selectpromotion.svg?v=1737700451320"
+                        alt=""
+                      />
+                      <p className="whitespace-nowrap">Select Promotion</p>
+                    </div>
+                    <div className="flex flex-col items-start">
+                      <select
+                        id="bonusOption"
+                        className="w-full px-2 bg-menuHoverActiveColor focus:outline-none focus:border-transparent"
+                        onChange={(e) =>
+                          setFormData({ ...formData, bonusId: e.target.value })
+                        }
+                      >
+                        <option selected disabled value={""}>
+                          Select an option
                         </option>
-                      ))}
-                    </select>
+                        {bonusPromotions?.map((item) => (
+                          <option key={item?._id} value={item?._id}>
+                            {item?.bonusTitle}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
-                </div>
+                )}
+
                 <div className="py-3 px-2 bg-footerBg max-h-[410px] 2xl:max-h-[560px] overflow-y-auto scrollbar-hide">
-                  {/* Bank account name */}
                   <div className="p-3 bg-white rounded-md">
                     <h2 className="mb-2 text-base font-semibold text-depositeModalTitleColor border-l-4 border-depositeModalBorderColor pl-1">
                       Payment Method
                     </h2>
-                    {activeTabBottom === "deposit" ? (
-                      <div className="">
-                        <div className="grid grid-cols-3 gap-2">
-                          {depositMethods?.map((item) => (
+                    <div className="grid grid-cols-3 gap-2">
+                      {(activeTabBottom === "deposit" ? depositMethods : withdrawalMethods)?.map(
+                        (item) => (
+                          <button
+                            key={item._id}
+                            className="p-2 relative bg-gray-200 rounded-md text-center group"
+                            onClick={() => {
+                              setPaymentMethod(item);
+                              setFormData({
+                                ...formData,
+                                paymentMethod: item?.method,
+                              });
+                            }}
+                          >
+                            <img
+                              className="w-12 m-auto transform transition-transform duration-300 group-hover:scale-110"
+                              src={`${import.meta.env.VITE_BASE_API_URL}${item.image}`}
+                              alt={item?.method}
+                            />
+                            {item?.method === paymentMethod?.method && (
+                              <span className="absolute top-[-5px] right-[-5px] bg-depositChannelBorderColor text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
+                                <Check size={10} />
+                              </span>
+                            )}
+                          </button>
+                        )
+                      )}
+                    </div>
+
+                    <div className="mt-2 p-3 bg-white rounded-md">
+                      <h2 className="mb-2 text-base font-semibold text-depositeModalTitleColor border-l-4 border-depositeModalBorderColor pl-1">
+                        {activeTabBottom === "deposit" ? "Deposit" : "Withdrawal"} Channel
+                      </h2>
+                      <div className="flex gap-3">
+                        {depositChannels?.map((label, index) => (
+                          <button
+                            key={index}
+                            onClick={() =>
+                              setFormData({
+                                ...formData,
+                                depositChannel: label,
+                              })
+                            }
+                            className={`relative py-1.5 px-4 text-sm border rounded-sm uppercase transition-all duration-300 ${
+                              formData.depositChannel === label
+                                ? "border-depositChannelBorderColor text-depositChannelBorderColor"
+                                : "border-gray-400 text-gray-600"
+                            }`}
+                          >
+                            {label}
+                            {formData.depositChannel === label && (
+                              <span className="absolute top-[-5px] right-[-5px] bg-depositChannelBorderColor text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
+                                <Check size={10} />
+                              </span>
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="mt-2 p-3 bg-white rounded-md">
+                      <h2 className="mb-2 text-base font-semibold text-depositeModalTitleColor border-l-4 border-depositeModalBorderColor pl-1">
+                        Amount
+                      </h2>
+                      <div>
+                        <div className="grid grid-cols-4 gap-3 mb-3">
+                          {amounts.map((amount, index) => (
                             <button
-                              key={item._id} // Use a unique key like item._id
-                              className="p-2 relative bg-gray-200 rounded-md text-center group"
-                              onClick={() => {
-                                setPaymentMethod(item);
-                                setFormData({
-                                  ...formData,
-                                  paymentMethod: item?.method,
-                                });
-                              }}
+                              key={index}
+                              onClick={() => handleClick(amount)}
+                              className="flex items-center gap-2 py-1.5 px-3 text-sm border border-gray-400 rounded-sm transition-all duration-300 hover:border-black hover:text-black"
                             >
-                              <img
-                                className="w-12 m-auto transform transition-transform duration-300 group-hover:scale-110"
-                                src={`${import.meta.env.VITE_BASE_API_URL}${
-                                  item.image
-                                }`}
-                                alt={item?.method}
-                              />
-                              {item?.method === paymentMethod?.method && (
-                                <span className="absolute top-[-5px] right-[-5px] bg-depositChannelBorderColor text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
-                                  <Check size={10} />
-                                </span>
-                              )}
+                              + {amount}
                             </button>
                           ))}
                         </div>
-                        {/* Deposit Channel */}
-                        <div className="mt-2 p-3 bg-white rounded-md">
-                          <h2 className="mb-2 text-base font-semibold text-depositeModalTitleColor border-l-4 border-depositeModalBorderColor pl-1">
-                            Deposit Channel
-                          </h2>
-                          <div className="flex gap-3">
-                            {depositChannels?.map((label, index) => (
-                              <button
-                                key={index}
-                                onClick={() =>
-                                  setFormData({
-                                    ...formData,
-                                    depositChannel: label,
-                                  })
-                                }
-                                className={`relative py-1.5 px-4 text-sm border rounded-sm uppercase transition-all duration-300 ${
-                                  formData.depositChannel === label
-                                    ? "border-depositChannelBorderColor text-depositChannelBorderColor"
-                                    : "border-gray-400 text-gray-600"
-                                }`}
-                              >
-                                {label}
-                                {formData.depositChannel === label && (
-                                  <span className="absolute top-[-5px] right-[-5px] bg-depositChannelBorderColor text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
-                                    <Check size={10} />
-                                  </span>
-                                )}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Amount */}
-                        <div className="mt-2 p-3 bg-white rounded-md">
-                          <h2 className="mb-2 text-base font-semibold text-depositeModalTitleColor border-l-4 border-depositeModalBorderColor pl-1">
-                            Amount
-                          </h2>
-                          <div>
-                            {/* Grid Buttons */}
-                            <div className="grid grid-cols-4 gap-3 mb-3">
-                              {amounts.map((amount, index) => (
-                                <button
-                                  key={index}
-                                  onClick={() => handleClick(amount)}
-                                  className="flex items-center gap-2 py-1.5 px-3 text-sm border border-gray-400 rounded-sm transition-all duration-300 hover:border-black hover:text-black"
-                                >
-                                  + {amount}
-                                </button>
-                              ))}
-                            </div>
-
-                            {/* Selected Total Amount */}
-                            <div className="flex justify-between items-center gap-2 bg-slate-200 border py-1.5 px-3 rounded-md">
-                              <h3 className="text-base font-semibold">
-                                <FaBangladeshiTakaSign />
-                              </h3>
-                              <p className="text-sm font-semibold">
-                                {formData.amount > 0 ? formData.amount : "0.00"}
-                              </p>
-                            </div>
-                          </div>
-
-                          <div className="flex gap-2 mt-2 p-2 bg-yellow-100 rounded-sm">
-                            <BsFillPatchExclamationFill size={34} />
-                            <div
-                              dangerouslySetInnerHTML={{
-                                __html: paymentMethod?.instruction,
-                              }}
-                              className=""
-                            ></div>
-                          </div>
+                        <div className="flex justify-between items-center gap-2 bg-slate-200 border py-1.5 px-3 rounded-md">
+                          <h3 className="text-base font-semibold">
+                            <FaBangladeshiTakaSign />
+                          </h3>
+                          <input
+                          style={{backgroundColor: 'transparent'}}
+                            type="number"
+                            value={formData.amount > 0 ? formData.amount : 0}
+                            onChange={(e) =>
+                              setFormData((prevState) => ({
+                                ...prevState,
+                                amount: parseFloat(e.target.value),
+                              }))
+                            }
+                            step="any"
+                            className="w-full text-right text-sm font-semibold outline-none"
+                          />
                         </div>
                       </div>
-                    ) : (
-                      <div>On Working</div>
-                      // <div className="">
-                      //   <div className="grid grid-cols-3 gap-2">
-                      //     {withdrawalMethods?.map((item) => (
-                      //       <button
-                      //         key={item._id} // Use a unique key like item._id
-                      //         className="p-2 relative bg-gray-200 rounded-md text-center group"
-                      //       >
-                      //         <img
-                      //           className="w-16 m-auto transform transition-transform duration-300 group-hover:scale-110"
-                      //           src={`${import.meta.env.VITE_BASE_API_URL}${
-                      //             item.image
-                      //           }`}
-                      //           alt={item?.method}
-                      //         />
-                      //       </button>
-                      //     ))}
-                      //   </div>
-                      //   {/* Deposit Channel */}
-                      //   <div className="mt-2 p-3 bg-white rounded-md">
-                      //     <h2 className="mb-2 text-base font-semibold text-footerTextColor border-l-4 border-footerTextColor pl-1">
-                      //       Deposit Channel
-                      //     </h2>
-                      //     <div className="flex gap-3">
-                      //       {paymentMethod?.depositChannels?.map(
-                      //         (label, index) => (
-                      //           <button
-                      //             key={index}
-                      //             onClick={() =>
-                      //               setFormData({
-                      //                 ...formData,
-                      //                 depositChannel: label,
-                      //               })
-                      //             }
-                      //             className={`relative py-1.5 px-4 text-sm border rounded-sm uppercase transition-all duration-300 ${
-                      //               formData.depositChannel === label
-                      //                 ? "border-footerTextColor text-footerTextColor"
-                      //                 : "border-gray-400 text-gray-600"
-                      //             }`}
-                      //           >
-                      //             {label}
-                      //             {formData.depositChannel === label && (
-                      //               <span className="absolute top-[-5px] right-[-5px] bg-footerTextColor text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
-                      //                 <Check size={10} />
-                      //               </span>
-                      //             )}
-                      //           </button>
-                      //         )
-                      //       )}
-                      //     </div>
-                      //   </div>
 
-                      //   {/* Amount */}
-                      //   <div className="mt-2 p-3 bg-white rounded-md">
-                      //     <h2 className="mb-2 text-base font-semibold text-footerTextColor border-l-4 border-footerTextColor pl-1">
-                      //       Amount
-                      //     </h2>
-                      //     <div>
-                      //       {/* Grid Buttons */}
-                      //       <div className="grid grid-cols-4 gap-3 mb-3">
-                      //         {paymentMethod?.amounts.map((amount, index) => (
-                      //           <button
-                      //             key={index}
-                      //             onClick={() => handleClick(amount)}
-                      //             className="flex items-center gap-2 py-1.5 px-3 text-sm border border-gray-400 rounded-sm transition-all duration-300 hover:border-black hover:text-black"
-                      //           >
-                      //             + {amount}
-                      //           </button>
-                      //         ))}
-                      //       </div>
-
-                      //       {/* Selected Total Amount */}
-                      //       <div className="flex justify-between items-center gap-2 bg-slate-200 border py-1.5 px-3 rounded-md">
-                      //         <h3 className="text-base font-semibold">
-                      //           <FaBangladeshiTakaSign />
-                      //         </h3>
-                      //         <p className="text-sm font-semibold">
-                      //           {formData.amount > 0 ? formData.amount : "0.00"}
-                      //         </p>
-                      //       </div>
-                      //     </div>
-
-                      //     <div className="flex gap-2 mt-2 p-2 bg-yellow-100 rounded-sm">
-                      //       <BsFillPatchExclamationFill size={34} />
-                      //       <div className="">
-                      //         <p className="text-xs">
-                      //           ১/ব্যক্তিগত তথ্য-এর অধীনে ক্যাশ আউট করার আগে
-                      //           সর্বোচ্চ ৩টি মোবাইল নম্বর যোগ করুন এবং ভেরিফাই
-                      //           করুন।
-                      //         </p>
-                      //         <p className="text-xs">
-                      //           ২/আপনার ডিপোজিট প্রক্রিয়ার দ্রুত সফল করতে সঠিক
-                      //           ক্যাশ আউট নাম্বার , এমাউন্ট এবং ট্রানজেকশন আইডি
-                      //           সহ সাবমিট দিন।
-                      //         </p>
-                      //         <p className="text-xs">
-                      //           ৩/যেকোনো ডিপোজিট করার আগে সবসময় আমাদের ডিপোজিট
-                      //           পেইজে নাম্বার চেক করুন ।
-                      //         </p>
-                      //         <p className="text-xs">
-                      //           ৪/ডিপোজিট পেন্ডিং অবস্থায় আপনি ২টি ডিপোজিট এর
-                      //           জন্য ট্রাই করতে পারবেন। আপনি কোনো সমস্যার
-                      //           সম্মুখীন হলে লাইভচ্যাট সহায়তা নিতে পারেন।
-                      //         </p>
-                      //       </div>
-                      //     </div>
-                      //   </div>
-                      // </div>
-                    )}
+                      <div className="flex gap-2 mt-2 p-2 bg-yellow-100 rounded-sm">
+                        <BsFillPatchExclamationFill size={34} />
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: paymentMethod?.instruction,
+                          }}
+                          className=""
+                        ></div>
+                      </div>
+                    </div>
                   </div>
 
                   <button
@@ -433,7 +429,7 @@ const DepositModal = ({ closeDepositModal }) => {
                 </div>
               </div>
             </div>
-          ) : (
+          ) : activeTabBottom === "deposit" ? (
             <DepositLastPage
               paymentMethod={paymentMethod}
               closeModal={closeDepositModal}
@@ -441,10 +437,23 @@ const DepositModal = ({ closeDepositModal }) => {
               formData={formData}
               randomNumber={randomNumber}
               refetch={refetch}
-              handleSubmit={handleSubmit}
+              handleSubmit={handleDepositSubmit}
               handleInputChange={handleInputChange}
               tempInputValues={tempInputValues}
-              isLoading={isLoading}
+              isLoading={isDepositLoading}
+            />
+          ) : (
+            <WithdrawLastPage
+              paymentMethod={paymentMethod}
+              closeModal={closeDepositModal}
+              setFormData={setFormData}
+              formData={formData}
+              randomNumber={randomNumber}
+              refetch={refetch}
+              handleSubmit={handleWithdrawSubmit}
+              handleInputChange={handleInputChange}
+              tempInputValues={tempInputValues}
+              isLoading={isWithdrawLoading}
             />
           )}
         </div>

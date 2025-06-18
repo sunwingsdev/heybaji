@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { useLoginAffiliateMutation } from "../../redux/features/allApis/usersApi/AffiliatesApi";
+import { useLoginAffiliateMutation } from "../../redux/features/allApis/usersApi/affiliatesApi";
 import Swal from "sweetalert2";
 import { useToasts } from "react-toast-notifications";
 import { useNavigate } from "react-router-dom";

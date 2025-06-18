@@ -2,7 +2,7 @@ import { IoIosSearch } from "react-icons/io";
 import {
   useGetAffiliatesQuery,
   useUpdateAffiliateStatusMutation,
-} from "../../redux/features/allApis/usersApi/AffiliatesApi";
+} from "../../redux/features/allApis/usersApi/affiliatesApi";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 // import { BiLogInCircle } from "react-icons/bi";

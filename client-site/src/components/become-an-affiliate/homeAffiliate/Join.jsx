@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import mobileImage from "../../../assets/affiliates/mobile.png";
-
+import mobileImage from "../../../assets/affiliates/mobile.png"; 
+ 
 const Join = () => {
   return (
     <div className="w-full my-12">

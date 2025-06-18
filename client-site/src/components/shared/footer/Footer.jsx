@@ -13,47 +13,47 @@ const Footer = () => {
   const socials = [
     {
       urlLink: "https://www.facebook.com/",
-      image:
-        "https://img.m156b.com/mb/h5/assets/images/footer/socialicons/facebook.svg?v=1727771384153&source=mcdsrc",
+      image: 
+        "https://img.m156b.com/mb/h5/assets/images/footer/socialicons/facebook.svg?v=1727771384153&source=mcdsrc", 
     },
     {
       urlLink: "https://www.instagram.com/",
       image:
-        "https://img.m156b.com/mb/h5/assets/images/footer/socialicons/instagram.svg?v=1727771384153&source=mcdsrc",
-    },
+        "https://img.m156b.com/mb/h5/assets/images/footer/socialicons/instagram.svg?v=1727771384153&source=mcdsrc", 
+    },  
     {
       urlLink: "https://twitter.com/",
       image:
-        "https://img.m156b.com/mb/h5/assets/images/footer/socialicons/twitter.svg?v=1727771384153&source=mcdsrc",
+        "https://img.m156b.com/mb/h5/assets/images/footer/socialicons/twitter.svg?v=1727771384153&source=mcdsrc", 
     },
     {
       urlLink: "https://web.telegram.org/",
       image:
-        "https://img.m156b.com/mb/h5/assets/images/footer/socialicons/telegram-channel.svg?v=1727771384153&source=mcdsrc",
+        "https://img.m156b.com/mb/h5/assets/images/footer/socialicons/telegram-channel.svg?v=1727771384153&source=mcdsrc", 
     },
     {
       urlLink: "/",
       image:
-        "https://img.m156b.com/mb/h5/assets/images/footer/socialicons/pinterest.svg?v=1727771384153&source=mcdsrc",
+        "https://img.m156b.com/mb/h5/assets/images/footer/socialicons/pinterest.svg?v=1727771384153&source=mcdsrc", 
     },
   ];
   const accounts = [
     {
       image:
-        "https://img.m156b.com/mb/h5/assets/images/footer/white/pay16.png?v=1727771384153&source=mcdsrc",
+        "https://img.m156b.com/mb/h5/assets/images/footer/white/pay16.png?v=1727771384153&source=mcdsrc", 
     },
     {
       image:
-        "https://img.m156b.com/mb/h5/assets/images/footer/white/pay22.png?v=1727771384153&source=mcdsrc",
+        "https://img.m156b.com/mb/h5/assets/images/footer/white/pay22.png?v=1727771384153&source=mcdsrc", 
     },
     {
       image:
-        "https://img.m156b.com/mb/h5/assets/images/footer/white/pay33.png?v=1727771384153&source=mcdsrc",
+        "https://img.m156b.com/mb/h5/assets/images/footer/white/pay33.png?v=1727771384153&source=mcdsrc", 
       imageSize: true,
     },
     {
       image:
-        "https://img.m156b.com/mb/h5/assets/images/footer/white/pay34.png?v=1727771384153&source=mcdsrc",
+        "https://img.m156b.com/mb/h5/assets/images/footer/white/pay34.png?v=1727771384153&source=mcdsrc", 
     },
   ];
 

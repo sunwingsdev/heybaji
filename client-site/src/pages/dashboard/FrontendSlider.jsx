@@ -5,42 +5,42 @@ const FrontendSlider = () => {
     {
       gameName: "Valorant",
       imgLink:
-        "https://demos.codexcoder.com/themeforest/html/casina/casina/assets/images/jaqport/01.jpg",
+        "https://demos.codexcoder.com/themeforest/html/casina/casina/assets/images/jaqport/01.jpg", 
     },
     {
       gameName: "Minecraft",
       imgLink:
-        "https://demos.codexcoder.com/themeforest/html/casina/casina/assets/images/jaqport/02.jpg",
+        "https://demos.codexcoder.com/themeforest/html/casina/casina/assets/images/jaqport/02.jpg", 
     },
     {
       gameName: "Fortnite",
       imgLink:
-        "https://demos.codexcoder.com/themeforest/html/casina/casina/assets/images/jaqport/03.jpg",
+        "https://demos.codexcoder.com/themeforest/html/casina/casina/assets/images/jaqport/03.jpg", 
     },
     {
       gameName: "Call of Duty",
       imgLink:
-        "https://demos.codexcoder.com/themeforest/html/casina/casina/assets/images/jaqport/04.jpg",
+        "https://demos.codexcoder.com/themeforest/html/casina/casina/assets/images/jaqport/04.jpg", 
     },
     {
       gameName: "Among Us",
       imgLink:
-        "https://demos.codexcoder.com/themeforest/html/casina/casina/assets/images/jaqport/05.jpg",
+        "https://demos.codexcoder.com/themeforest/html/casina/casina/assets/images/jaqport/05.jpg", 
     },
     {
       gameName: "Apex Legends",
       imgLink:
-        "https://demos.codexcoder.com/themeforest/html/casina/casina/assets/images/jaqport/06.jpg",
+        "https://demos.codexcoder.com/themeforest/html/casina/casina/assets/images/jaqport/06.jpg", 
     },
     {
       gameName: "League of Legends",
-      imgLink:
-        "https://demos.codexcoder.com/themeforest/html/casina/casina/assets/images/jaqport/07.jpg",
+      imgLink: 
+        "https://demos.codexcoder.com/themeforest/html/casina/casina/assets/images/jaqport/07.jpg", 
     },
     {
       gameName: "PUBG",
       imgLink:
-        "https://demos.codexcoder.com/themeforest/html/casina/casina/assets/images/jaqport/08.jpg",
+        "https://demos.codexcoder.com/themeforest/html/casina/casina/assets/images/jaqport/08.jpg", 
     },
   ];
 

@@ -29,13 +29,13 @@ const mobilePaymentMethods = [
     bgColor: "#ec1d25",
   },
   {
-    image: "https://pay.hostbuybd.com/assets/template/images/upay.png",
+    image: "https://pay.hostbuybd.com/assets/template/images/upay.png", 
     gateway: "MOBILE_BANKING",
     paymentMethod: "Upay",
     bgColor: "#ec1d25",
   },
   {
-    image: "https://pay.hostbuybd.com/assets/template/images/tap.png",
+    image: "https://pay.hostbuybd.com/assets/template/images/tap.png", 
     gateway: "MOBILE_BANKING",
     paymentMethod: "Tap",
     bgColor: "#ec1d25",

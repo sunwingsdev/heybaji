@@ -9,7 +9,7 @@ import {
 import { useUpdateUserProfileImageMutation } from "../../redux/features/allApis/usersApi/usersApi";
 import { uploadImage } from "../../hooks/files";
 import { ClipLoader } from "react-spinners";
-import noImage from "../../assets/noImageAvailable.png";
+import noImage from "../../assets/noImageAvailable.png";  
 import { IoCameraOutline } from "react-icons/io5";
 import CashAgentProfileUserInfo from "../../components/cash-agent/cash-agent-profile/CashAgentProfileUserInfo";
 import CashAgentKycUpdate from "../../components/cash-agent/cash-agent-profile/CashAgentKycUpdate";

@@ -5,7 +5,7 @@ import {
   useUpdateAgentMutation,
   useUpdateUserProfileImageMutation,
 } from "../../redux/features/allApis/usersApi/usersApi";
-import noImage from "../../assets/noImageAvailable.png";
+import noImage from "../../assets/noImageAvailable.png"; 
 import {
   useGetKycByIdQuery,
   useUpdateKycStatusMutation,

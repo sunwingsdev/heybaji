@@ -1,4 +1,4 @@
-import affiliatImg from "../../assets/affiliatesDa.png";
+import affiliatImg from "../../assets/affiliatesDa.png"; 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 

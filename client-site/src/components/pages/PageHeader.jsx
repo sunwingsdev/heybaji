@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import blogo from "../../assets/Affiliates/BD.png";
+import blogo from "../../assets/Affiliates/BD.png"; 
 import { useGetHomeControlsQuery } from "../../redux/features/allApis/homeControlApi/homeControlApi";
 
 const PageHeader = () => {

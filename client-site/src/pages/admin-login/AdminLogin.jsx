@@ -1,5 +1,5 @@
 import { useState } from "react";
-import image from "../../assets/admin/adminImage.webp";
+import image from "../../assets/admin/adminImage.webp"; 
 import { FaKey } from "react-icons/fa";
 import { FaCircleUser } from "react-icons/fa6";
 import { useDispatch } from "react-redux";

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"; 
 import { FaTimes } from "react-icons/fa";
 import { useGetPromotionsQuery } from "../../../redux/features/allApis/promotionApi/promotionApi";
 import { useGetPaymentMethodsQuery } from "../../../redux/features/allApis/paymentMethodApi/paymentMethodApi";
@@ -178,7 +178,7 @@ const DepositModal = ({ closeDepositModal }) => {
                 <div className="bg-menuHoverActiveColor text-white text-sm flex items-center justify-between gap-2 py-2 px-5">
                   <div className="flex gap-2 items-center">
                     <img
-                      src="https://img.d4040p.com/dp/h5/assets/images/icon-set/icon-selectpromotion.svg?v=1737700451320"
+                      src="https://img.d4040p.com/dp/h5/assets/images/icon-set/icon-selectpromotion.svg?v=1737700451320" 
                       alt=""
                     />
                     <p className="whitespace-nowrap">Select Promotion</p>

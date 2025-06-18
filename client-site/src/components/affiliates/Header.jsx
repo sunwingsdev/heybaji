@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import logo from "../../assets/Affiliates/footer_logo.png";
-import blogo from "../../assets/Affiliates/BD.png";
+import logo from "../../assets/Affiliates/footer_logo.png"; 
+import blogo from "../../assets/Affiliates/BD.png"; 
 
 const Header = () => {
   const [isModalOpen, setModalOpen] = useState(false);

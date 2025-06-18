@@ -8,7 +8,7 @@ import { useLazyGetAuthenticatedUserQuery } from "../../redux/features/allApis/u
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../../redux/slices/authSlice";
 import { ClipLoader } from "react-spinners";
-import affiliateBg from "../../assets/Affiliates/affiliateBg.jpg";
+import affiliateBg from "../../assets/Affiliates/affiliateBg.jpg"; 
 
 const Login = () => {
   const {

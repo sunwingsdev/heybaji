@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import OppsModal from "../shared/modal/OppsModal";
 import { useToasts } from "react-toast-notifications";
-import myAccount from "../../assets/myAccount.png";
+import myAccount from "../../assets/myAccount.png"; 
 import { useLazyGetUserByIdQuery } from "../../redux/features/allApis/usersApi/usersApi";
 import { TfiReload } from "react-icons/tfi";
 

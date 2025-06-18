@@ -7,7 +7,7 @@ import {
 } from "../../redux/features/allApis/usersApi/usersApi";
 import { useGetKycByIdQuery } from "../../redux/features/allApis/kycApi/kycApi";
 import { ClipLoader } from "react-spinners";
-import noImage from "../../assets/noImageAvailable.png";
+import noImage from "../../assets/noImageAvailable.png"; 
 import { PhotoView } from "react-photo-view";
 import { FaCheck } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";

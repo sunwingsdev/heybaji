@@ -5,7 +5,7 @@ import Footer from "../components/shared/footer/Footer";
 import Navbar from './../components/shared/navbar/Navbar';
 import SidebarMenu from "../components/shared/sidebarMenu/SidebarMenu";
 import { IoIosCloseCircle } from "react-icons/io";
-import sticker from "../assets/sticker.gif";
+import sticker from "../assets/sticker.gif"; 
 
 const MainLayout = () => {
   const [open, setOpen] = useState(false);
@@ -18,7 +18,7 @@ const MainLayout = () => {
   const staticMenuItems = [
     {
       name: "হোম",
-      icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/theme-icon/icon-home.png?v=1737700451320",
+      icon: "https://img.d4040p.com/dp/h5/assets/images/icon-set/theme-icon/icon-home.png?v=1737700451320", 
       path: "/",
       submenu: [],
     },

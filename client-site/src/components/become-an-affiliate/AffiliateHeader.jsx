@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import blogo from "../../assets/affiliates/BD.png"; 
+import blogo from "../../assets/Affiliates/BD.png";
 import { MdOutlineMenu } from "react-icons/md";
 import { FaCaretDown } from "react-icons/fa";
 import { useGetHomeControlsQuery } from "../../redux/features/allApis/homeControlApi/homeControlApi";

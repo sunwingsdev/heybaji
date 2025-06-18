@@ -1,6 +1,6 @@
-import AffiliatesAllProduct from "../../components/AffiliatesDashboard/AffiliatesAllProduct";
-import AffiliatesCoundCard from "../../components/AffiliatesDashboard/AffiliatesCoundCard";
-import AffiliatesDashboardTable from "../../components/AffiliatesDashboard/AffiliatesDashboardTable";
+import AffiliatesAllProduct from "../../components/affiliatesDashboard/AffiliatesAllProduct";
+import AffiliatesCoundCard from "../../components/affiliatesDashboard/AffiliatesCoundCard";
+import AffiliatesDashboardTable from "../../components/affiliatesDashboard/AffiliatesDashboardTable";
 
 const AffiliatesHome = () => {
   return (

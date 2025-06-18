@@ -5,7 +5,7 @@ import {
   useUpdateAgentMutation,
   useUpdateUserProfileImageMutation,
 } from "../../redux/features/allApis/usersApi/usersApi";
-import noImage from "../../assets/noImageAvailable.png";
+import noImage from "../../assets/noImageAvailable.png"; 
 import CashAgentProfileUserInfo from "../../components/cash-agent/cash-agent-profile/CashAgentProfileUserInfo";
 import CashAgentKycUpdate from "../../components/cash-agent/cash-agent-profile/CashAgentKycUpdate";
 import { IoCameraOutline } from "react-icons/io5";

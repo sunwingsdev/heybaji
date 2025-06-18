@@ -3,7 +3,7 @@ import { useAddAffiliateMutation } from "../../redux/features/allApis/usersApi/a
 import { useToasts } from "react-toast-notifications";
 import { Link, useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
-import affiliateBg from "../../assets/Affiliates/affiliateBg.jpg";
+import affiliateBg from "../../assets/Affiliates/affiliateBg.jpg"; 
 
 const Sign = () => {
   const { addToast } = useToasts();

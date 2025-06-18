@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import walletNumber from "../../../assets/walletNumber.png";
+import walletNumber from "../../../assets/walletNumber.png"; 
 import { useToasts } from "react-toast-notifications";
 import { GoCopy } from "react-icons/go";
 

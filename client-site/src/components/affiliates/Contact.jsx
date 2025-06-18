@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
-import flogo from "../../assets/Affiliates/fb-1.png";
-import tlogo from "../../assets/Affiliates/Telegram.png";
-import dlogo from "../../assets/Affiliates/footer_logo.png";
+import { Link } from "react-router-dom"; 
+import flogo from "../../assets/Affiliates/fb-1.png"; 
+import tlogo from "../../assets/Affiliates/Telegram.png"; 
+import dlogo from "../../assets/Affiliates/footer_logo.png"; 
 
 const Contact = () => {
   return (

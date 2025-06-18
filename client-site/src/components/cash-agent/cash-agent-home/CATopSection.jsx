@@ -8,15 +8,15 @@ import {
 import { PiHandDepositBold, PiHandWithdrawBold } from "react-icons/pi";
 import { BiTransferAlt } from "react-icons/bi";
 import { AiFillPieChart } from "react-icons/ai";
-import bkash from "../../../assets/agent/bkash.png";
-import nagad from "../../../assets/agent/nagad.png";
-import rocket from "../../../assets/agent/rocket.png";
-import upay from "../../../assets/agent/upay.png";
-import tap from "../../../assets/agent/tap.png";
-import mcash from "../../../assets/agent/mcash.png";
-import cellfin from "../../../assets/agent/cellfin.png";
-import okwal from "../../../assets/agent/okwallet.png";
-import CAdepositStatesCard from "./CAdepositStatesCard";
+import bkash from "../../../assets/agent/bkash.png"; 
+import nagad from "../../../assets/agent/nagad.png"; 
+import rocket from "../../../assets/agent/rocket.png"; 
+import upay from "../../../assets/agent/upay.png"; 
+import tap from "../../../assets/agent/tap.png"; 
+import mcash from "../../../assets/agent/mcash.png"; 
+import cellfin from "../../../assets/agent/cellfin.png"; 
+import okwal from "../../../assets/agent/okwallet.png"; 
+import CAdepositStatesCard from "./CAdepositStatesCard"; 
 
 const CATopSection = () => {
   const stats = [

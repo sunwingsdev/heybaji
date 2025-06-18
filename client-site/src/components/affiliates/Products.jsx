@@ -1,11 +1,11 @@
-import casinoImage from "../../assets/Affiliates/Casino.png";
-import slotImage from "../../assets/Affiliates/slot.png";
-import sportsImage from "../../assets/Affiliates/sports.png";
+import casinoImage from "../../assets/Affiliates/Casino.png"; 
+import slotImage from "../../assets/Affiliates/slot.png"; 
+import sportsImage from "../../assets/Affiliates/sports.png"; 
 // import tableImage from "../../assets/Affiliates/table.png";
-import crashImage from "../../assets/Affiliates/crash.png";
-import fishingImage from "../../assets/Affiliates/fishing.png";
-import lotteryImage from "../../assets/Affiliates/lotary.png";
-import arcadeImage from "../../assets/Affiliates/Arcade.png";
+import crashImage from "../../assets/Affiliates/crash.png"; 
+import fishingImage from "../../assets/Affiliates/fishing.png"; 
+import lotteryImage from "../../assets/Affiliates/lotary.png"; 
+import arcadeImage from "../../assets/Affiliates/Arcade.png"; 
 
 const Products = () => {
   return (

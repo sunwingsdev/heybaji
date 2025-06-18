@@ -5,7 +5,7 @@ import { useToasts } from "react-toast-notifications";
 import {
   useGetAffiliateByIdQuery,
   useUpdateAffiliateMutation,
-} from "../../redux/features/allApis/usersApi/AffiliatesApi";
+} from "../../redux/features/allApis/usersApi/affiliatesApi";
 import { useUpdateUserProfileImageMutation } from "../../redux/features/allApis/usersApi/usersApi";
 import { uploadImage } from "../../hooks/files";
 import { ClipLoader } from "react-spinners";

@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useAddAffiliateMutation } from "../../redux/features/allApis/usersApi/AffiliatesApi";
+import { useAddAffiliateMutation } from "../../redux/features/allApis/usersApi/affiliatesApi";
 import { useToasts } from "react-toast-notifications";
 import { Link, useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";

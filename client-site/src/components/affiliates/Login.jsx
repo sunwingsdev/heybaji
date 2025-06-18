@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { useLoginAffiliateMutation } from "../../redux/features/allApis/usersApi/affiliatesApi";
+import { useLoginAffiliateMutation } from "../../redux/features/allApis/usersApi/AffiliatesApi";
 import Swal from "sweetalert2";
 import { useToasts } from "react-toast-notifications";
 import { useNavigate } from "react-router-dom";
@@ -8,7 +8,7 @@ import { useLazyGetAuthenticatedUserQuery } from "../../redux/features/allApis/u
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../../redux/slices/authSlice";
 import { ClipLoader } from "react-spinners";
-import affiliateBg from "../../assets/Affiliates/affiliateBg.jpg"; 
+import affiliateBg from "../../assets/Affiliates/affiliateBg.jpg";
 
 const Login = () => {
   const {
@@ -68,7 +68,7 @@ const Login = () => {
         });
 
         if (userData?.user?.role !== "affiliate") {
-          navigate("/affiliatesdashboard");
+          navigate("/Affiliatesdashboard");
         } else {
           navigate("/affiliate/login");
         }

@@ -1,10 +1,10 @@
-import dlogo from "../../../assets/affiliates/dollar.png";  
-import clogo from "../../../assets/affiliates/cost.png";  
-import blogo from "../../../assets/affiliates/bonus.png";  
-import flogo from "../../../assets/affiliates/fee.png";  
-import tlogo from "../../../assets/affiliates/affilate_total.png";  
-import CommissionCard from "./CommissionCard";  
-<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />; 
+import dlogo from "../../../assets/Affiliates/dollar.png";
+import clogo from "../../../assets/Affiliates/cost.png";
+import blogo from "../../../assets/Affiliates/bonus.png";
+import flogo from "../../../assets/Affiliates/fee.png";
+import tlogo from "../../../assets/Affiliates/affilate_total.png";
+import CommissionCard from "./CommissionCard";
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />;
 
 const Commission = () => {
   // Table data

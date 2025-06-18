@@ -24,7 +24,7 @@ const affiliatesApi = baseApi.injectEndpoints({
 
     // get all affiliates
     getAffiliates: builder.query({
-      query: () => "/users/affiliates",
+      query: () => "/users/Affiliates",
       providesTags: ["users"],
     }),
 

@@ -126,7 +126,7 @@ const affiliateApi = (usersCollection, homeControlsCollection) => {
   });
 
   // get all affiliates
-  router.get("/affiliates", async (req, res) => {
+  router.get("/Affiliates", async (req, res) => {
     try {
       const result = await usersCollection
         .find({ role: "affiliate" }, { projection: { password: 0 } })

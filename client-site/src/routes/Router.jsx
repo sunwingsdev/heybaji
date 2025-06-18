@@ -29,28 +29,28 @@ import CashAgentRoute from "./CashAgentRoute";
 import CashAgentProfile from "../pages/cash-agent/CashAgentProfile";
 import Kyc from "../pages/dashboard/Kyc";
 import AffiliatesLayout from "../layout/AffiliatesLayout";
-import Sign from "../components/affiliates/Sign";
-import Login from "../components/affiliates/Login";
+import Sign from "../components/Affiliates/Sign";
+import Login from "../components/Affiliates/Login";
 import Pages from "../pages/page/Pages";
 import ManagePages from "../pages/dashboard/ManagePages";
-import AffiliatesHome from "../pages/affiliates-dashboard/AffiliatesHome";
-import HomeAffiliate from "../pages/affiliates/HomeAffiliate";
+import AffiliatesHome from "../pages/Affiliates-dashboard/AffiliatesHome";
+import HomeAffiliate from "../pages/Affiliates/HomeAffiliate";
 import PaymentMethodRequests from "../pages/dashboard/PaymentMethodRequests";
 import AgentProfileView from "../pages/dashboard/AgentProfileView";
 import AffiliateRoute from "./AffiliateRoute";
-import AffiliateProfile from "../pages/affiliates-dashboard/AffiliateProfile";
-import MyAffiliateLinks from "../pages/affiliates-dashboard/MyAffiliateLinks";
+import AffiliateProfile from "../pages/Affiliates-dashboard/AffiliateProfile";
+import MyAffiliateLinks from "../pages/Affiliates-dashboard/MyAffiliateLinks";
 import ReferralRedirect from "../components/shared/ReferralRedirect ";
 import AllAffiliateLinks from "../pages/dashboard/AllAffiliateLinks.jsx";
 import CommissionSetting from "../pages/dashboard/CommissionSetting.jsx";
 import NotFound from "../pages/NotFound";
 import DepositLastPage from "../components/home/deposit-modal/DepositLastPage";
 import DepositMethod from "../pages/dashboard/DepositMethod";
-import BecomeAnAffiliate from "../pages/affiliates/BecomeAnAffiliate.jsx";
-import TermsAndConditions from "../pages/affiliates/TermsAndConditions/TermsAndConditions.jsx";
-import PrivacyPolicy from "../pages/affiliates/privacyPolicy/PrivacyPolicy.jsx";
-import Disconnection from "../pages/affiliates/disconnection/Disconnection.jsx";
-import Faqs from "../pages/affiliates/faqs/Faqs.jsx";
+import BecomeAnAffiliate from "../pages/Affiliates/BecomeAnAffiliate.jsx";
+import TermsAndConditions from "../pages/Affiliates/TermsAndConditions/TermsAndConditions.jsx";
+import PrivacyPolicy from "../pages/Affiliates/privacyPolicy/PrivacyPolicy.jsx";
+import Disconnection from "../pages/Affiliates/disconnection/Disconnection.jsx";
+import Faqs from "../pages/Affiliates/faqs/Faqs.jsx";
 import GameName from "../pages/dashboard/AddGame.jsx";
 import GamePageFeatured from "../pages/GamePage/GamePageFeatured.jsx";
 import GamePageCategory from "../pages/GamePage/GamePageCategory.jsx";
@@ -89,7 +89,6 @@ const router = createBrowserRouter([
         path: "/game/GameView/:gameId",
         element: <SingleGameView />, // Redirect to homepage when ref query is present
       },
-      
     ],
   },
   {
@@ -184,7 +183,7 @@ const router = createBrowserRouter([
   },
 
   {
-    path: "/affiliatesdashboard",
+    path: "/Affiliatesdashboard",
     element: (
       <AffiliateRoute>
         <AffiliatesLayout />

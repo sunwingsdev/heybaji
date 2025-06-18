@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import flogo from "../../assets/affiliates/fb-1.png"; 
-import tlogo from "../../assets/affiliates/Telegram.png"; 
-import dlogo from "../../assets/affiliates/footer_logo.png"; 
+import flogo from "../../assets/Affiliates/fb-1.png";
+import tlogo from "../../assets/Affiliates/Telegram.png";
+import dlogo from "../../assets/Affiliates/footer_logo.png";
 import { useGetHomeControlsQuery } from "../../redux/features/allApis/homeControlApi/homeControlApi";
 
 const Contact = () => {

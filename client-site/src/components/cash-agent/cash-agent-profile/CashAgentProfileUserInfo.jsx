@@ -14,7 +14,7 @@ const CashAgentProfileUserInfo = ({
     "/dashboard/agentprofile/"
   );
   const isAffiliateProfilePage = location.pathname.includes(
-    "/affiliatesdashboard/profile/"
+    "/Affiliatesdashboard/profile/"
   );
   const isAgentProfilePage = location.pathname.includes("/cashagent/profile/");
   const {

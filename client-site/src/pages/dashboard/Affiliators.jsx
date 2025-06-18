@@ -1,9 +1,6 @@
 import { useState } from "react";
 import { IoIosSearch } from "react-icons/io";
-import {
-  useGetAffiliatesQuery,
-  useUpdateAffiliateStatusMutation,
-} from "../../redux/features/allApis/usersApi/AffiliatesApi";
+
 import { Link } from "react-router-dom";
 import { BiLogInCircle } from "react-icons/bi";
 import { ClipLoader } from "react-spinners";
@@ -11,6 +8,7 @@ import TablePagination from "../../components/dashboard/TablePagination";
 import { useGetAllCommissionsQuery } from "../../redux/features/allApis/commissionApi/commissionApi";
 import { useGetDepositsQuery } from "../../redux/features/allApis/depositsApi/depositsApi";
 import { useGetWithdrawsQuery } from "../../redux/features/allApis/withdrawsApi/withdrawsApi";
+import { useGetAffiliatesQuery, useUpdateAffiliateStatusMutation } from "../../redux/features/allApis/usersApi/affiliatesApi";
 
 const Affiliators = () => {
   const { data: allAffiliatesData, isLoading, error } = useGetAffiliatesQuery();

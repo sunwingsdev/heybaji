@@ -33,7 +33,7 @@ const AffiliatesLayout = () => {
     {
       name: "My Affiliae Links",
       icon: <FaAffiliatetheme />,
-      path: `/affiliatesdashboard/myaffiliatelinks/${user?._id}`,
+      path: `/Affiliatesdashboard/myaffiliatelinks/${user?._id}`,
       submenu: [],
     },
     {
@@ -112,7 +112,7 @@ const AffiliatesLayout = () => {
         <CashAgentMobileMenu
           open={open}
           menuItems={menuItems}
-          dashboardLink="/affiliatesdashboard"
+          dashboardLink="/Affiliatesdashboard"
           logOutPath="/affiliate"
         />
         <div className="mt-[62px] md:mt-16 p-2">

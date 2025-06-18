@@ -1,9 +1,9 @@
 import { useForm } from "react-hook-form";
-import { useAddAffiliateMutation } from "../../redux/features/allApis/usersApi/affiliatesApi";
+import { useAddAffiliateMutation } from "../../redux/features/allApis/usersApi/AffiliatesApi";
 import { useToasts } from "react-toast-notifications";
 import { Link, useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
-import affiliateBg from "../../assets/Affiliates/affiliateBg.jpg"; 
+import affiliateBg from "../../assets/Affiliates/affiliateBg.jpg";
 
 const Sign = () => {
   const { addToast } = useToasts();
@@ -29,7 +29,7 @@ const Sign = () => {
       addToast("Affiliate Registration successfully!", {
         appearance: "success",
       });
-      navigate("/affiliatesdashboard");
+      navigate("/Affiliatesdashboard");
     } catch (error) {
       addToast(error?.data?.message || "Something went wrong!", {
         appearance: "error",

@@ -1,4 +1,4 @@
-import slogo from "../../../assets/affiliates/commision_plan_banner.png"; 
+import slogo from "../../../assets/Affiliates/commision_plan_banner.png";
 
 const CommissionCard = ({ icon, textLeft = "left-16", text }) => {
   return (
